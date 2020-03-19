@@ -17,8 +17,6 @@ collections:
         file: "src/data/settings.json"
         description: "General site settings"
         fields:
-          - {label: "Startsida", name: "homepage", widget: "relation", collection: "sidor", searchFields: "title", valueField: "title", displayFields: "title"}
-          - {label: "Sida för integritetspolicy", name: "integritypage", widget: "relation", collection: "sidor", searchFields: "title", valueField: "title", displayFields: "title"}
           - label: "Sociala medier"
             name: "socialmedia"
             widget: "object"
@@ -30,64 +28,7 @@ collections:
               - {label: "Twitter", name: "Twitter", widget: "string", required: false}
               - {label: "Youtube", name: "Youtube", widget: "string", required: false}
               - {label: "Codepen", name: "Codepen", widget: "string", required: false}
-              - {label: "Github", name: "Github", widget: "string", required: false}
-      - name: "header-settings"
-        label: "Header"
-        file: "src/data/header.json"
-        description: "Header content"
-        fields:
-          - label: "Huvudmeny"
-            label_singular: "Länk"
-            name: "mainmenu"
-            widget: "list"
-            required: false
-            fields:
-              - {label: "Titel", name: "title", widget: "string"} 
-              - {label: "Länk", name: "to", widget: "string"} 
-              - label: "Undermeny"
-                label_singular: "Länk"
-                name: "submenu"
-                widget: "list"
-                required: false
-                fields:
-                  - {label: "Länktext", name: "title", widget: "string"} 
-                  - {label: "Url", name: "to", widget: "string"}  
-      - name: "footer-settings"
-        label: "Footer"
-        file: "src/data/footer.json"
-        description: "Footer content"
-        fields:
-          - label: "Meny"
-            name: "footermenu"
-            widget: "list"
-            required: false
-            fields:
-              - {label: "Rubrik", name: "title", widget: "string", required: false}
-              - label: "Innehåll"
-                name: "links"
-                widget: "list"
-                required: false
-                types:
-                  - label: "Text"
-                    name: "text"
-                    widget: "object"
-                    fields:
-                      - {label: "Text", name: "title", widget: "string"}
-                  - label: "Länk"
-                    name: "internal"
-                    widget: "object"
-                    fields:
-                      - {label: "Länktext", name: "title", widget: "string"} 
-                      - {label: "Url", name: "to", widget: "string"} 
-          - label: "Diskret meny"
-            label_singular: "Länk"
-            name: "bottommenu"
-            widget: "list"
-            required: false
-            fields:
-              - {label: "Länktext", name: "title", widget: "string"} 
-              - {label: "Url", name: "to", widget: "string"}
-
+              - {label: "Github", name: "Github", widget: "string", required: false} 
   - label: "Artiklar"
     label_singular: "Artikel"
     name: "artiklar"

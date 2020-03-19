@@ -2,10 +2,14 @@ import React, { Component } from 'react'
 import styled from '@emotion/styled'
 import { StaticQuery, graphql } from 'gatsby'
 import HorizontalNav from '../Navigation/HorizontalNav'
-import { StyledLink } from '../Navigation/NavigationItem'
-import Container from '../UI/Grid'
-import Logo from '../UI/Logo'
-import InfoList from './InfoList'
+
+import Facebook from '../../img/social/facebook.svg'
+import Twitter from '../../img/social/twitter.svg'
+import Instagram from '../../img/social/instagram.svg'
+import LinkedIn from '../../img/social/linkedin.svg'
+import Youtube from '../../img/social/youtube.svg'
+import Codepen from '../../img/social/codepen.svg'
+import Github from '../../img/social/github.svg'
 
 
 /*==============================================================================
@@ -13,54 +17,15 @@ import InfoList from './InfoList'
 ==============================================================================*/
 
 const FooterWrapper = styled('footer')`
-  flex-shrink: 0;
-  padding-top: 30px;
-  padding-bottom: 30px;
-`
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  padding: 30px 15px;
+  text-align: center;
 
-const FooterRow = styled('div')`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 70px 0px;
-
-  ${({theme}) => theme.above.md} {
-    justify-content: space-between;
-  }
-`
-const BottomRow = styled(FooterRow)`
-  padding: 5px 0px 0px 0px;
-  border-top: 1px solid ${({theme}) => theme.colors.bgContrastLower};
-`
-
-const NavigationContainer = styled('div')`
-  display: flex;
-  flex-wrap: wrap;
-  width: 100%;
-  justify-content: space-around;
-
-  ${({theme}) => theme.above.md} {
-    width: auto;
-    justify-content: flex-end;
-  }
-`
-
-const DiscreetNav = styled(HorizontalNav)`
-
-  ${({theme}) => theme.below.md} {
+  .footer-icons {
     justify-content: center;
-  }
-
-  ${StyledLink} {
-    color: ${({theme}) => theme.colors.bgContrast};
-    ${({theme}) => theme.fontSizes.description}
-    text-decoration: underline;
-    transition: all 250ms ease;
-
-    &:hover {
-      color: ${({theme}) => theme.colors.text};
-    }
   }
 `
 
@@ -70,6 +35,19 @@ const DiscreetNav = styled(HorizontalNav)`
 ==============================================================================*/
 
 class Footer extends Component {
+
+  getIcon = (name) => {
+    const icons = {
+      Facebook,
+      Instagram,
+      LinkedIn,
+      Twitter,
+      Youtube,
+      Codepen,
+      Github
+    }
+    return icons[name]
+  }
 
   render() {
 
@@ -82,34 +60,34 @@ class Footer extends Component {
         `}
         render={data => {
 
-          let footermenu = data.allDataJson.edges[0].node.footermenu
-          let bottomLinks = data.allDataJson.edges[0].node.bottommenu
+          let socialmedia = null
+          let socialmediaLinks = []
+
+          data.allDataJson.edges.forEach(item => {
+            socialmedia = item.node.socialmedia ? item.node.socialmedia : socialmedia
+          })
+
+          if ( socialmedia ) {
+            for (let key in socialmedia) {
+              if ( socialmedia.hasOwnProperty(key) && socialmedia[key]) {
+
+                const title = key
+                const Icon = this.getIcon(title)
+
+                socialmediaLinks.push({
+                  title: title,
+                  to: socialmedia[key],
+                  icon: <Icon />,
+                  target: true
+                })
+
+              }
+            }
+          }
 
           return (
             <FooterWrapper>
-              <Container>
-
-                <FooterRow>
-
-                  <Logo />
-
-                  <NavigationContainer>
-                    {footermenu && footermenu.map( (item, i) => (
-                      <InfoList 
-                        key={i}
-                        title={item.title}
-                        items={item.links}
-                      />
-                    ))}
-                  </NavigationContainer>
-
-                </FooterRow>
-
-                <BottomRow>
-                  <DiscreetNav links={bottomLinks} />
-                </BottomRow>
-
-              </Container>
+              <HorizontalNav className="footer-icons" links={socialmediaLinks} />
             </FooterWrapper>
           )
         }}

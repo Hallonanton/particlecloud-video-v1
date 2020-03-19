@@ -71,19 +71,11 @@ export const SiteMetaQuery = graphql`
   }
 `
 
-export const Header = graphql`
-  fragment Header on Query {
+export const Footer = graphql`
+  fragment Footer on Query {
     allDataJson {
       edges {
         node {
-          mainmenu {
-            title
-            to
-            submenu {
-              title
-              to
-            }
-          }
           socialmedia {
             Facebook
             Instagram
@@ -93,55 +85,6 @@ export const Header = graphql`
             Codepen
             Github
           }
-        }
-      }
-    }
-  }
-`
-
-export const Footer = graphql`
-  fragment Footer on Query {
-    allDataJson(filter: {
-      footermenu: {
-        elemMatch: {
-          links: {
-            elemMatch: {
-              title: {ne: null}
-            }
-          }
-        }
-      }
-    }) {
-      edges {
-        node {
-          footermenu {
-            title
-            links {
-              type
-              title
-              to
-            }
-          }
-          bottommenu {
-            title
-            to
-          }
-        }
-      }
-    }
-  }
-`
-
-export const CookieConsent = graphql`
-  fragment CookieConsent on Query {
-    allDataJson(
-      filter: {
-        integritypage: {ne: null}
-      }
-    ) {
-      edges {
-        node {
-          integritypage
         }
       }
     }

@@ -26,17 +26,6 @@ exports.createPages = ({ actions, graphql }) => {
           }
         }
       }
-      allDataJson(
-        filter: {
-          homepage: {ne: null}
-        }
-      ) {
-        edges {
-          node {
-            homepage
-          }
-        }
-      }
     }
   `).then(result => {
     if (result.errors) {
@@ -75,13 +64,7 @@ exports.createPages = ({ actions, graphql }) => {
 
         // If template is page, remove "sidor" directory from path
         if ( templateKey === 'SinglePage' ) {
-
           slug = slug.replace("/sidor", "")
-
-          //Set homepage
-          if ( homepage && slug === `/${_.kebabCase(homepage)}/` ) {
-            slug = "/"
-          }
         }
 
         createPage({

@@ -1,5 +1,5 @@
 import React from 'react'
-import _ from 'lodash'
+import { zipObject } from 'lodash'
 import 'reset-css'
 import PropTypes from 'prop-types'
 import ReactBreakpoints from 'react-breakpoints'
@@ -15,7 +15,7 @@ import { createBreakpointHelpers } from '../../utility/breakpoints'
 const labels = ['xs', 'sm', 'md', 'lg', 'xl']
 const breakpoints = ['540px', '768px', '992px', '1200px', '1400px']
 const breakpointHelpers = createBreakpointHelpers(labels, breakpoints)
-const reactBreakpoints = _.zipObject(labels, breakpoints.map(breakpoint => parseInt(breakpoint)))
+const reactBreakpoints = zipObject(labels, breakpoints.map(breakpoint => parseInt(breakpoint)))
 
 
 /*==============================================================================
@@ -27,7 +27,7 @@ let colors = {
   green:    '#2ecc71',
   yellow:   '#f1c40f',
   blue:     '#2a6cf0',
-  black:    '#1d1d1d',
+  black:    '#000000',
   white:    '#ffffff',
 }
 
@@ -38,7 +38,7 @@ colors.bgContrastLow = '#D6D6D7'
 colors.bgContrast = '#D3D3D4'
 colors.bgContrastHigh = '#313135'
 colors.bgContrastHigher = '#1C1C21'
-colors.primary = colors.blue
+colors.primary = colors.black
 colors.accent = '#2980b9'
 colors.success = colors.green
 colors.error = colors.red
@@ -84,8 +84,8 @@ let easings = {
   easeInOutBack:  'cubic-bezier(.8,-0.25,.2,1.25)'
 }
 
-easings.primary = easings.easeInOutQuint
-easings.secondary = easings.easeInOutSine
+easings.primary = `all 250ms ${easings.easeInOutQuint}`
+easings.secondary = `all 250ms ${easings.easeInOutSine}`
 
 
 /*==============================================================================
