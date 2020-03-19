@@ -1,0 +1,200 @@
+backend:
+  name: git-gateway
+  branch: master
+
+media_folder: static/img
+public_folder: /img
+
+collections:
+  - label: "Inställningar"
+    name: "setttings"
+    delete: false
+    editor:
+      preview: false
+    files:
+      - name: "general-settings"
+        label: "Sidinställningar"
+        file: "src/data/settings.json"
+        description: "General site settings"
+        fields:
+          - {label: "Startsida", name: "homepage", widget: "relation", collection: "sidor", searchFields: "title", valueField: "title", displayFields: "title"}
+          - {label: "Sida för integritetspolicy", name: "integritypage", widget: "relation", collection: "sidor", searchFields: "title", valueField: "title", displayFields: "title"}
+          - label: "Sociala medier"
+            name: "socialmedia"
+            widget: "object"
+            required: false
+            fields:
+              - {label: "Facebook", name: "Facebook", widget: "string", required: false}
+              - {label: "Instagram", name: "Instagram", widget: "string", required: false}
+              - {label: "LinkedIn", name: "LinkedIn", widget: "string", required: false}
+              - {label: "Twitter", name: "Twitter", widget: "string", required: false}
+              - {label: "Youtube", name: "Youtube", widget: "string", required: false}
+              - {label: "Codepen", name: "Codepen", widget: "string", required: false}
+              - {label: "Github", name: "Github", widget: "string", required: false}
+      - name: "header-settings"
+        label: "Header"
+        file: "src/data/header.json"
+        description: "Header content"
+        fields:
+          - label: "Huvudmeny"
+            label_singular: "Länk"
+            name: "mainmenu"
+            widget: "list"
+            required: false
+            fields:
+              - {label: "Titel", name: "title", widget: "string"} 
+              - {label: "Länk", name: "to", widget: "string"} 
+              - label: "Undermeny"
+                label_singular: "Länk"
+                name: "submenu"
+                widget: "list"
+                required: false
+                fields:
+                  - {label: "Länktext", name: "title", widget: "string"} 
+                  - {label: "Url", name: "to", widget: "string"}  
+      - name: "footer-settings"
+        label: "Footer"
+        file: "src/data/footer.json"
+        description: "Footer content"
+        fields:
+          - label: "Meny"
+            name: "footermenu"
+            widget: "list"
+            required: false
+            fields:
+              - {label: "Rubrik", name: "title", widget: "string", required: false}
+              - label: "Innehåll"
+                name: "links"
+                widget: "list"
+                required: false
+                types:
+                  - label: "Text"
+                    name: "text"
+                    widget: "object"
+                    fields:
+                      - {label: "Text", name: "title", widget: "string"}
+                  - label: "Länk"
+                    name: "internal"
+                    widget: "object"
+                    fields:
+                      - {label: "Länktext", name: "title", widget: "string"} 
+                      - {label: "Url", name: "to", widget: "string"} 
+          - label: "Diskret meny"
+            label_singular: "Länk"
+            name: "bottommenu"
+            widget: "list"
+            required: false
+            fields:
+              - {label: "Länktext", name: "title", widget: "string"} 
+              - {label: "Url", name: "to", widget: "string"}
+
+  - label: "Artiklar"
+    label_singular: "Artikel"
+    name: "artiklar"
+    folder: "src/pages/artiklar"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Nyckel", name: "templateKey", widget: "hidden", default: "SingleArticle"}
+      - {label: "Rubrik", name: "title", widget: "string"}
+      - {label: "Publiceringsdatum", name: "date", widget: "datetime"}
+      - {label: "Beskrivning", name: "description", widget: "text", required: false}
+      - {label: "Utvald bild", name: "featuredimage", widget: image}
+      - {label: "Innehåll", name: "body", widget: "markdown"}
+      - {label: "Kategorier", name: "categories", widget: "list", required: false}
+      - label: "Metadata"
+        name: "meta"
+        hit: "Använd detta fält för att spara över standardmetadata."
+        widget: "object"
+        required: false
+        fields:
+          - {label: "Titel", name: "metaTitle", widget: "string", required: false}
+          - {label: "Beskrivning", name: "metaDescription", widget: "text", required: false}
+
+  - label: "Sidor"
+    label_singular: "Sida"
+    name: "sidor"
+    folder: "src/pages/sidor"
+    create: true
+    slug: '{{slug}}'
+    fields:
+      - {label: "Nyckel", name: "templateKey", widget: "hidden", default: "SinglePage"}
+      - {label: "Rubrik", name: "title", widget: "string"}
+      - label: "Sektioner"
+        label_singular: "Sektion"
+        name: "sections"
+        widget: "list"
+        types:
+          - label: "Text"
+            name: "text"
+            widget: "object"
+            required: false
+            fields:
+              - {label: "Nyckel", name: "sectionKey", widget: "hidden", default: "SectionText"}
+              - {label: "Rubrik", name: "title", widget: "string"}
+              - {label: "Text", name: "textBody", widget: "markdown"}
+          - label: "Bild med text"
+            name: "imageText"
+            widget: "object"
+            required: false
+            fields:
+              - {label: "Nyckel", name: "sectionKey", widget: "hidden", default: "SectionImageText"}
+              - {label: "Bild", name: "imageHalf", widget: "image"}
+              - label: "Bildposition"
+                name: "alignment"
+                widget: "select"
+                options:
+                  - { label: "Bild till vänster", value: "left" }
+                  - { label: "Bild till höger", value: "right" }
+                default: "left"
+              - {label: "Rubrik", name: "title", widget: "string"}
+              - {label: "Text", name: "text", widget: "text"}
+              - label: "Länk"
+                name: "link"
+                widget: "object"
+                required: false
+                fields: 
+                  - {label: "Länktext", name: "title", widget: "string", required: false}
+                  - {label: "Url", name: "to", widget: "string", required: false}
+          - label: "Bild"
+            name: "image"
+            widget: "object"
+            required: false
+            fields:
+              - {label: "Nyckel", name: "sectionKey", widget: "hidden", default: "SectionImage"}
+              - {label: "Bild", name: "imageFull", widget: "image"}
+          - label: "Artiklar"
+            name: "articles"
+            widget: "object"
+            required: false
+            fields:
+              - {label: "Nyckel", name: "sectionKey", widget: "hidden", default: "SectionArticles"}
+              - {label: "Rubrik", name: "title", widget: "string"}
+              - {label: "Kategorinamn", name: "category", widget: "string", required: false}
+          - label: "Textkort"
+            name: "textCards"
+            widget: "object"
+            required: false
+            fields:
+              - {label: "Nyckel", name: "sectionKey", widget: "hidden", default: "SectionTextCards"}
+              - label: "Kort"
+                name: "cards"
+                widget: "list"
+                fields: 
+                  - {label: "Rubrik", name: "title", widget: "string"}
+                  - {label: "Text", name: "text", widget: "text", }
+                  - label: "Länk"
+                    name: "link"
+                    widget: "object"
+                    required: false
+                    fields: 
+                      - {label: "Länktext", name: "title", widget: "string", required: false}
+                      - {label: "Url", name: "to", widget: "string", required: false}
+      - label: "Metadata"
+        name: "meta"
+        hit: "Använd detta fält för att spara över standardmetadata."
+        widget: "object"
+        required: false
+        fields:
+          - {label: "Titel", name: "metaTitle", widget: "string", required: false}
+          - {label: "Beskrivning", name: "metaDescription", widget: "text", required: false}

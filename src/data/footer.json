@@ -1,0 +1,91 @@
+{
+  "footermenu": [
+    {
+      "title": "Om oss",
+      "links": [
+        {
+          "type": "text",
+          "title": "Adressvägen 1"
+        },
+        {
+          "type": "text",
+          "title": "12 345 Ankeborg"
+        },
+        {
+          "type": "text",
+          "title": "123 - 45 67 89"
+        },
+        {
+          "type": "text",
+          "title": "info@mejl.com"
+        }
+      ]
+    },
+    {
+      "title": "Tjänster",
+      "links": [
+        {
+          "type": "internal",
+          "title": "Placeholder 1",
+          "to": "/"
+        },
+        {
+          "type": "internal",
+          "title": "Placeholder 2",
+          "to": "/"
+        },
+        {
+          "type": "internal",
+          "title": "Placeholder 3",
+          "to": "/"
+        },
+        {
+          "type": "internal",
+          "title": "Placeholder 4",
+          "to": "/"
+        },
+        {
+          "type": "internal",
+          "title": "Placeholder 5",
+          "to": "/"
+        }
+      ]
+    },
+    {
+      "title": "Produkter",
+      "links": [
+        {
+          "type": "internal",
+          "title": "Placeholder 1",
+          "to": "/"
+        },
+        {
+          "type": "internal",
+          "title": "Placeholder 2",
+          "to": "/"
+        },
+        {
+          "type": "internal",
+          "title": "Placeholder 3",
+          "to": "/"
+        },
+        {
+          "type": "internal",
+          "title": "Placeholder 4",
+          "to": "/"
+        },
+        {
+          "type": "internal",
+          "title": "Placeholder 5",
+          "to": "/"
+        }
+      ]
+    }
+  ],
+  "bottommenu": [
+    {
+      "title": "Integritetspolicy",
+      "to": "/integritetspolicy"
+    }
+  ]
+}
