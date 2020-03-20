@@ -36,7 +36,6 @@
     "react": "^16.8.4",
     "react-animate-height": "^2.0.15",
     "react-breakpoints": "^3.0.3",
-    "react-custom-scrollbars": "^4.2.1",
     "react-dom": "^16.8.4",
     "react-helmet": "^5.2.0",
     "react-media-universal": "^2.0.2",
