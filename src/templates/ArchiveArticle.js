@@ -4,7 +4,6 @@ import styled from '@emotion/styled'
 import Layout from '../components/Layout/Layout'
 import PageMetadata from '../components/Layout/PageMetadata'
 import Container from '../components/UI/Grid'
-import Searchbar from '../components/UI/Searchbar'
 import Button from '../components/UI/Button'
 import { Mega, SmallHeading } from '../components/UI/Headings'
 import ArticleCard, { ArticleCardContainer } from '../components/UI/ArticleCard'
@@ -132,8 +131,6 @@ export class ArchiveTemplate extends Component {
       <Container>
         
         <Title>{title}</Title>
-
-        <Searchbar onSearch={search => this.onSearch(search)} />
 
         {posts && posts.length > 0 ? (
           <Fragment>

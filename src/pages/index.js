@@ -1,7 +1,7 @@
 import React from 'react'
 //import { graphql } from 'gatsby'
 import Layout from '../components/Layout/Layout'
-import SectionHome from '../components/Sections/SectionHome'
+import SectionHome from '../components/Home/SectionHome'
 import PageMetadata from '../components/Layout/PageMetadata'
 
 

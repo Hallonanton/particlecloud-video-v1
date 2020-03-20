@@ -98,6 +98,15 @@ module.exports = {
         modulePath: `${__dirname}/src/cms/cms.js`,
       },
     },
+    {
+      resolve: 'gatsby-plugin-google-fonts',
+      options: {
+        fonts: [
+          'open sans\:400,700'
+        ],
+        display: 'swap'
+      }
+    },
     'gatsby-plugin-netlify', // make sure to keep it last in the array
   ],
 }

@@ -33,7 +33,7 @@ const StyledLink = styled(Link)`
   color: ${({theme}) => theme.colors.text};
   text-decoration: none;
   overflow: hidden;
-  transition: all 250ms ${({theme}) => theme.easings.secondary};
+  transition: ${({theme}) => theme.easings.secondary};
 
   ${({theme}) => theme.below.sm} {
     box-shadow: ${({theme}) => theme.styles.boxshadow};
@@ -50,7 +50,7 @@ const Content = styled('div')`
 
 const Text = styled('p')`
   margin-top: 10px;
-  transition: all 250ms ${({theme}) => theme.easings.secondary};
+  transition: ${({theme}) => theme.easings.secondary};
   ${({theme}) => theme.fontSizes.description}
 `
 

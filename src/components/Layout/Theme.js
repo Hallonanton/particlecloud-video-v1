@@ -23,25 +23,28 @@ const reactBreakpoints = zipObject(labels, breakpoints.map(breakpoint => parseIn
 ==============================================================================*/
 
 let colors = {
-  red:      '#e74c3c',
-  green:    '#2ecc71',
-  yellow:   '#f1c40f',
-  blue:     '#2a6cf0',
-  black:    '#000000',
+  black:    '#000000', 
   white:    '#ffffff',
+  grey:     '#787878'
 }
 
-colors.text = colors.black
+colors.text = colors.grey
+colors.textHover = colors.black
 colors.bg = colors.white
-colors.bgContrastLower = '#F2F2F2'
-colors.bgContrastLow = '#D6D6D7'
-colors.bgContrast = '#D3D3D4'
-colors.bgContrastHigh = '#313135'
-colors.bgContrastHigher = '#1C1C21'
-colors.primary = colors.black
-colors.accent = '#2980b9'
-colors.success = colors.green
-colors.error = colors.red
+colors.bgPerifery = '#f8f8f8'
+
+
+
+
+colors.bgContrastLower = '#f0f0f0'
+colors.bgContrastLow = '#f0f0f0'
+colors.bgContrast = '#f0f0f0'
+colors.bgContrastHigh = '#f0f0f0'
+colors.bgContrastHigher = '#f0f0f0'
+colors.primary = '#f0f0f0'
+colors.accent = '#f0f0f0'
+colors.success = '#f0f0f0'
+colors.error = '#f0f0f0'
 
 
 /*==============================================================================
@@ -84,8 +87,8 @@ let easings = {
   easeInOutBack:  'cubic-bezier(.8,-0.25,.2,1.25)'
 }
 
-easings.primary = `all 250ms ${easings.easeInOutQuint}`
-easings.secondary = `all 250ms ${easings.easeInOutSine}`
+easings.primary = `all 450ms ${easings.easeInOutQuint} 0ms`
+easings.secondary = `all 250ms ${easings.easeInOutSine} 0ms`
 
 
 /*==============================================================================
@@ -111,7 +114,7 @@ const linkEase = `
     transform: scale3d(0,1,1);
     transform-origin: 100% 50%;
     transition: background 450ms ease,
-                transform 450ms ${easings.primary};
+                ${easings.primary};
     will-change: transform;
   }
 
@@ -180,10 +183,9 @@ const margin = {
 ==============================================================================*/
 
 const fonts = {
-  primary: '"SF-Pro-Display",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
-  header: '"SF-Pro-Display",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif'
+  primary: '"Open Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
+  header: '"Open Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif'
 }
-
 
 /*==============================================================================
   # Font sizes
@@ -227,14 +229,14 @@ const subHeading = `
 `
 
 const regular = `
-  font-size: 1.8rem;
-  line-height: 1.39;
+  font-size: 1.5rem;
+  line-height: 1.4;
   letter-spacing: 0.26px;
 `
 
 const description = `
-  font-size: 1.4rem;
-  line-height: 1.5;
+  font-size: 1.2rem;
+  line-height: 1.3;
   letter-spacing: 0.2px;
 `
 
@@ -263,11 +265,11 @@ const pageReveal = keyframes`
 
 const globalStyles = css`
   ::-moz-selection {
-    background: ${colors.primary}; 
+    background: ${colors.text}; 
     color: ${colors.white};  
   }
   ::selection  {
-    background: ${colors.primary}; 
+    background: ${colors.text}; 
     color: ${colors.white};
   }
   html, 
@@ -277,7 +279,7 @@ const globalStyles = css`
     min-height: 100%;
     margin: 0px;
     padding: 0px;
-    background-color: ${colors.bg};
+    background: radial-gradient(${colors.bg}, ${colors.bgPerifery});
   }
   html {
     box-sizing: border-box;
@@ -286,7 +288,7 @@ const globalStyles = css`
     font-size: 62.5%;
   }
   body {
-    color: ${colors.black};
+    color: ${colors.text};
     font-family: ${fonts.primary};
     ${fontSizes.regular}
     overflow-x: hidden;

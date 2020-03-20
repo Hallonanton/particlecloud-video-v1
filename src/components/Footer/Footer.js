@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import styled from '@emotion/styled'
 import { StaticQuery, graphql } from 'gatsby'
-import HorizontalNav from '../Navigation/HorizontalNav'
+import IconNav from '../UI/IconNav'
+import { theme } from '../Layout/Theme'
 
 import Facebook from '../../img/social/facebook.svg'
 import Twitter from '../../img/social/twitter.svg'
@@ -17,12 +18,12 @@ import Github from '../../img/social/github.svg'
 ==============================================================================*/
 
 const FooterWrapper = styled('footer')`
-  position: fixed;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
-  padding: 30px 15px;
+  margin-top: 35px;
   text-align: center;
+
+  ${theme.above.md} {
+    margin-top: 90px;
+  }
 
   .footer-icons {
     justify-content: center;
@@ -87,7 +88,7 @@ class Footer extends Component {
 
           return (
             <FooterWrapper>
-              <HorizontalNav className="footer-icons" links={socialmediaLinks} />
+              <IconNav className="footer-icons" links={socialmediaLinks} />
             </FooterWrapper>
           )
         }}

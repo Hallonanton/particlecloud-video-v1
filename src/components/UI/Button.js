@@ -33,7 +33,7 @@ export const buttonStyle = ({ secondary, theme, disabled }) => css`
   text-transform: uppercase;
   outline: 0;
   cursor: pointer;
-  transition: all 250ms ${theme.easings.secondary};
+  transition: ${theme.easings.secondary};
 
   &:hover {
     text-decoration: none;
@@ -48,7 +48,7 @@ const Inner = styled('span')`
 	position: relative;
 	display: inline-block;
 	transform: translateY(0px);
-	transition: all 450ms ${({theme}) => theme.easings.secondary};
+	transition: ${({theme}) => theme.easings.secondary};
 
 	&::after {
 		display: block;
@@ -62,7 +62,7 @@ const Inner = styled('span')`
 		opacity: 0;
 		background-color: ${({theme}) => theme.colors.bg};
 		transform:translate(-50%, 0px);
-		transition: all 450ms ${({theme}) => theme.easings.primary};
+		transition: ${({theme}) => theme.easings.primary};
 	}
 `
 

@@ -35,7 +35,7 @@ const Card = styled('li')`
 
 const Text = styled('p')`
   margin-top: 15px;
-  transition: all 250ms ${({theme}) => theme.easings.secondary};
+  transition: ${({theme}) => theme.easings.secondary};
   ${({theme}) => theme.fontSizes.description}
 `
 
