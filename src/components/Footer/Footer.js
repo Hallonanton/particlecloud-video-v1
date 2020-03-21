@@ -31,6 +31,27 @@ const FooterWrapper = styled('footer')`
 
   .footer-icons {
     justify-content: center;
+
+    li {
+      opacity: 0;
+      transform: translateY(15px);
+      transition: all ${theme.easings.reveal};
+
+      &:nth-child(2) {
+        transition-delay: ${theme.easings.revealDelay};
+      }
+
+      &:nth-child(3) {
+        transition-delay: calc( 2 * ${theme.easings.revealDelay});
+      }
+    }
+  }
+
+  &.reveal {
+    li {
+      opacity: 1;
+      transform: translateY(0px);
+    }
   }
 `
 
@@ -91,7 +112,7 @@ class Footer extends Component {
           }
 
           return (
-            <FooterWrapper>
+            <FooterWrapper {...this.props}>
               <IconNav className="footer-icons" links={socialmediaLinks} />
             </FooterWrapper>
           )

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import styled from '@emotion/styled'
+import { css } from '@emotion/core'
 import { Link } from 'gatsby'
 import Footer from '../Footer/Footer'
 import { theme } from '../Layout/Theme'
@@ -46,6 +47,7 @@ const Description = styled('div')`
     text-transform: lowercase;
     ${theme.fontSizes.description}
     font-weight: 400;
+    transition-delay: ${theme.easings.revealDelay} !important;
   }
 
   .title,
@@ -53,6 +55,17 @@ const Description = styled('div')`
     width: 100%;
     line-height: 1.3;
     letter-spacing: 1.5px;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: all all ${theme.easings.reveal};
+  }
+
+  &.reveal {
+    .title,
+    .subTitle {
+      opacity: 1;
+      transform: translateY(0px);
+    }
   }
 `
 
@@ -68,25 +81,41 @@ const Navigation = styled('ul')`
 
 const Item = styled('li')`
   position: absolute;
+  overflow: hidden;
   transform-origin: 50% 50%;
   transform-style: preserve-3d;
-  transition: ${theme.easings.primary};
+  max-width: 0%;
+  transition: ${theme.easings.primary},
+              maxWidth ${theme.easings.reveal};
   z-index: 1;
+
+  ${Array(6).map((item, i) => css`
+    &:nth-child(${i+2}) {
+      transition: ${theme.easings.primary},
+                  maxWidth ${theme.easings.reveal} calc(${i+1} * ${theme.easings.revealDelay});
+    }
+  `)}
+
+  &.reveal {
+    max-width: 110%;
+  }
 
   &::before {
     display: block;
     position: absolute;
     content: "";
+    bottom: 0px;
     width: 100%;
-    height: 100%;
+    height: calc( 100% + 25px);
     transition: ${theme.easings.primary};
     opacity: 0;
-    z-index: 1;
     transform-style : preserve-3d;
+    transform: translateY(25px);
     background-image: url('${({backgroundImage}) => backgroundImage}');
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
+    z-index: 1;
 
     ${theme.above.md} {
       background-image: url('${({backgroundImageDesktop}) => backgroundImageDesktop}');
@@ -101,8 +130,10 @@ const Item = styled('li')`
     flex-direction: column;
     width: 100%;
     height: 100%;
+    padding: 20px 10px 0px;
     color: transparent;
     text-decoration: none;
+    white-space: nowrap;
     transition: ${theme.easings.primary};
     transform-style : preserve-3d;
     z-index: 2;
@@ -123,9 +154,11 @@ const Item = styled('li')`
   &.active {
     &::before {
       opacity: 0.3;
+      transform: translateY(0px);
     }
 
     a {
+      padding: 10px;
       color: ${theme.colors.white};
     }
   }
@@ -190,7 +223,7 @@ class MainNavigation extends Component {
 
     this.scrollTimeout = setTimeout(() => {
       const { items, activeIndex } = this.state
-      let newActiveIndex = activeIndex === null ? 0 : activeIndex
+      let newActiveIndex = activeIndex === null ? -1 : activeIndex
 
       if ( direction > 0 ) {
         newActiveIndex = newActiveIndex >= items.length-1 ? 0 : newActiveIndex + 1
@@ -316,6 +349,7 @@ class MainNavigation extends Component {
   render () {
 
     const { items, activeIndex, navWidth, navHeight, orientation } = this.state
+    const { reveal } = this.props
 
     return (
       <Navigation 
@@ -327,6 +361,10 @@ class MainNavigation extends Component {
           const isActive = activeIndex === i
           const notActive = activeIndex !== null && !isActive
           const isPortrait = orientation === 'portrait'
+
+          //Classes
+          let itemClasses = isActive ? 'active' : ''
+          itemClasses += reveal ? ' reveal' : ''
 
           //Colors
           const step = 20
@@ -385,7 +423,7 @@ class MainNavigation extends Component {
           return (
             <Item 
               key={i}
-              className={isActive ? 'active' : null}
+              className={itemClasses}
               style={{
                 top: top,
                 left: left,
@@ -474,17 +512,24 @@ const SectionHome = ({ title, subTitle }) => {
     }
   ]
 
+  let descriptionReveal = true
+  let mainReveal = true
+  let footerReveal = true
+
   return (
     <HomeWrapper>
 
-      <Description>
+      <Description className={descriptionReveal ? 'reveal' : ''}>
         {title && <h1 className="title">{title}</h1>}
         {subTitle && <h2 className="subTitle">{subTitle}</h2>}
       </Description>
 
-      <MainNavigation items={items} />
+      <MainNavigation
+        items={items}
+        reveal={mainReveal}
+      />
 
-      <Footer />
+      <Footer className={footerReveal ? 'reveal' : ''}/>
 
     </HomeWrapper>
   )

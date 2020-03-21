@@ -5,6 +5,7 @@ import PageMetadata from '../components/Layout/PageMetadata'
 import Container from '../components/UI/Grid'
 import { Hero } from '../components/UI/Headings'
 import Text from '../components/UI/Text'
+import Button from '../components/UI/Button'
 import Link from '../components/Link'
 import VideoSrc from "../img/404.mp4"
 
@@ -29,7 +30,9 @@ const Heading = styled(Hero)`
 `
 
 const Video = styled('video')`
+	width: 100%;
 	margin-top: 30px;
+	margin-bottom: 30px;
 `
 
 /*==============================================================================
@@ -55,6 +58,7 @@ const NotFoundPage = () => (
 				    <source src={VideoSrc} type="video/mp4" />
 				  </Video>
 			  </Link>
+			  <Button to="/">Till startsidan</Button>
     	</Content>
     </StyledContainer>
   </Layout>

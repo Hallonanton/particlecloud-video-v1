@@ -58,14 +58,15 @@ const IconNav = ({ links, ...rest }) => {
   return links && (links.length > 0) ? (
     <NavigationList {...rest}>
       {links.map((link, i) => (
-        <NavigationItem 
-          key={i}
-          to={link.to}
-          target={link.target}
-          title={link.title}
-        >
-          <Icon>{link.icon}</Icon>
-        </NavigationItem>
+        <li key={i}>
+          <NavigationItem 
+            to={link.to}
+            target={link.target}
+            title={link.title}
+          >
+            <Icon>{link.icon}</Icon>
+          </NavigationItem>
+        </li>
       ))}
     </NavigationList>
   ) : null
