@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 import { Link } from 'gatsby'
 import Footer from '../Footer/Footer'
 import { theme } from '../Layout/Theme'
-import { lightenDarkenColor } from '../../utility/functions'
+import { lightenDarkenColor, isTouchDevice } from '../../utility/functions'
 
 
 /*==============================================================================
@@ -363,8 +363,8 @@ class MainNavigation extends Component {
 
           if ( isActive ) {
             if (isPortrait) {
-              translateX = `${(width - (width/portraitWidthActive))/-2}px` //'-15px'
-              translateY = `${(height - (height/portraitheightActive))/-2}px` //'-30px'
+              translateX = `${(width - (width/portraitWidthActive))/-2}px`
+              translateY = `${(height - (height/portraitheightActive))/-2}px`
 
             } else {
               translateX = '0px'
@@ -395,8 +395,8 @@ class MainNavigation extends Component {
                 transform: `scaleX(${scale}) translate3d(${translateX}, ${translateY}, 0)`,
                 background: background
               }}
-              backgroundImage="https://placekitten.com/660/270"
-              backgroundImageDesktop="https://placekitten.com/800/800"
+              backgroundImage={item.backgroundImage}
+              backgroundImageDesktop={item.backgroundImageDesktop}
             >
               <Link
                 to={item.to}
@@ -407,7 +407,11 @@ class MainNavigation extends Component {
                   }
                   this.setActiveIndex(e)
                 }}
-                onMouseEnter={e => this.setActiveIndex(e)}
+                onMouseEnter={e => {
+                  if ( !isTouchDevice() ) {
+                    this.setActiveIndex(e)
+                  }
+                }}
               >
                 {item.topTitle && <h4 className="item--topTitle">{item.topTitle}</h4>}
                 {item.title && <h3 className="item--title">{item.title}</h3>}
@@ -426,35 +430,47 @@ const SectionHome = ({ title, subTitle }) => {
     {
       title: "Mer om",
       to: "/about",
-      color: "#99e9f2"
+      color: "#99e9f2",
+      backgroundImage: "https://placekitten.com/660/270",
+      backgroundImageDesktop: "https://placekitten.com/800/800",
     },
     {
       title: "Kunskap",
       to: "/knowledge",
-      color: "#8ce99a"
+      color: "#8ce99a",
+      backgroundImage: "https://placekitten.com/660/270",
+      backgroundImageDesktop: "https://placekitten.com/800/800",
     },
     {
       title: "Erfarenhet",
       to: "/experience",
-      color: "#ffd43b"
+      color: "#ffd43b",
+      backgroundImage: "https://placekitten.com/660/270",
+      backgroundImageDesktop: "https://placekitten.com/800/800",
     },
     {
       title: "Nybergs Bil",
       topTitle: "Case",
       to: "/nybergs-bil",
-      color: "#9e7b56"
+      color: "#9e7b56",
+      backgroundImage: "https://placekitten.com/660/270",
+      backgroundImageDesktop: "https://placekitten.com/800/800",
     },
     {
       title: "Svenska Hem",
       topTitle: "Case",
       to: "/svenska-hem",
-      color: "#e03131"
+      color: "#e03131",
+      backgroundImage: "https://placekitten.com/660/270",
+      backgroundImageDesktop: "https://placekitten.com/800/800",
     },
     {
       title: "OAS",
       topTitle: "Case",
       to: "/oas",
-      color: "#5b2160"
+      color: "#5b2160",
+      backgroundImage: "https://placekitten.com/660/270",
+      backgroundImageDesktop: "https://placekitten.com/800/800",
     }
   ]
 

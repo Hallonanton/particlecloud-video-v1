@@ -53,6 +53,18 @@ export function eraseCookie (name) {
 export const isPC = typeof document !== 'undefined' ? navigator.userAgent.indexOf('Mac OS X') === -1 : true;
 export const isMac = typeof document !== 'undefined' ? navigator.userAgent.indexOf('Mac OS X') !== -1 : false;
 
+export function isTouchDevice() {
+  if ( typeof document !== 'undefined' ) {
+      try {  
+        document.createEvent("TouchEvent");  
+        return true;  
+      } catch (e) {  
+        return false;  
+      }  
+  } else {
+      return true;
+  }
+}
 
 /*
  * Title to slug
