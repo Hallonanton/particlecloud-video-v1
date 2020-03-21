@@ -17,13 +17,21 @@ const HomeWrapper = styled('div')`
   align-items: center;
   width: 100vw;
   height: 100vh;
-  padding: 45px 15px;
+  padding: 15px 20px 5px;
+
+  ${theme.above.md} {
+    padding: 45px 20px;
+  }
 `
 
 const Description = styled('div')`
-  margin-bottom: 45px;
+  margin-bottom: 35px;
   color: ${theme.colors.text};
   text-align: center;
+
+  ${theme.above.sm} {
+    margin-bottom: 45px;
+  }
 
   ${theme.above.md} {
     margin-top: 40px;
@@ -50,6 +58,12 @@ const Description = styled('div')`
 
 const Navigation = styled('ul')`
   position: relative;
+  flex-grow: 1;
+  flex-shrink: 1;
+  width: 100%;
+  height: 100%;
+  max-width: 300px;
+  max-height: 450px;
 `
 
 const Item = styled('li')`
@@ -148,29 +162,16 @@ class MainNavigation extends Component {
     activeIndex: null,
     items: null, 
     orientation: 'portrait',
-    navWidth: 300,
-    navHeight: 450
+    navWidth: 280,
+    navHeight: 416
   }
 
-  handleResize = e => {
-    const { orientation } = this.state
+  handleResize = e => {    
+    if ( this.ref ) {
+      let navWidth = this.ref.offsetWidth
+      let navHeight = this.ref.offsetHeight
+      let newOrientation = navWidth > navHeight ? 'landscape' : 'portrait'
 
-    //Mobile values
-    let newOrientation = 'portrait'
-    let navWidth = 300
-    let navHeight = 450
-    
-    //Test desktop
-    if (typeof window !== 'undefined') {
-      if (window.matchMedia(theme.above.md.replace('@media ', '')).matches) {
-        //Desktop values
-        newOrientation = 'landscape'
-        navWidth = 600
-        navHeight = 300
-      }
-    }
-
-    if ( newOrientation !== orientation ) {
       this.setState({
         orientation: newOrientation,
         navWidth: navWidth,
@@ -277,6 +278,13 @@ class MainNavigation extends Component {
     return i
   }
 
+  handleRef = ref => {
+    if ( ref && !this.ref ) {
+      this.ref = ref
+      this.handleResize()
+    }
+  }
+
   render () {
 
     const { items, activeIndex, navWidth, navHeight, orientation } = this.state
@@ -284,10 +292,7 @@ class MainNavigation extends Component {
     return (
       <Navigation 
         onMouseLeave={() => this.resetActiveIndex()}
-        style={{
-          width: navWidth,
-          height: navHeight
-        }}
+        ref={ref => this.handleRef(ref)}
       >
         {items && items.map((item, i) => {
 
@@ -309,8 +314,10 @@ class MainNavigation extends Component {
           let left = isPortrait ? 0 : (i * width)
 
           //Sizes for portrait (mobile)
-          width = isActive && isPortrait ? width+30 : width
-          height = isActive && isPortrait ? height+60 : height
+          let portraitWidthActive = 1.08
+          let portraitheightActive = 1.4
+          width = isActive && isPortrait ? (width*portraitWidthActive) : width
+          height = isActive && isPortrait ? (height*portraitheightActive) : height
 
           //Sizes for landscape (desktop)
           height = isActive && !isPortrait ? height+50 : height
@@ -328,8 +335,8 @@ class MainNavigation extends Component {
 
           if ( isActive ) {
             if (isPortrait) {
-              translateX = '-15px'
-              translateY = '-30px'
+              translateX = `${(width - (width/portraitWidthActive))/-2}px` //'-15px'
+              translateY = `${(height - (height/portraitheightActive))/-2}px` //'-30px'
 
             } else {
               translateX = '0px'
@@ -369,8 +376,8 @@ class MainNavigation extends Component {
                 onClick={e => this.setActiveIndex(e)}
                 onMouseEnter={e => this.setActiveIndex(e)}
               >
-                {item.topTitle && <h4 class="item--topTitle">{item.topTitle}</h4>}
-                {item.title && <h3 class="item--title">{item.title}</h3>}
+                {item.topTitle && <h4 className="item--topTitle">{item.topTitle}</h4>}
+                {item.title && <h3 className="item--title">{item.title}</h3>}
               </Link>
             </Item>
           )

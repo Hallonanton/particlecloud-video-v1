@@ -276,9 +276,8 @@ const globalStyles = css`
   body,
   #___gatsby,
   #gatsby-focus-wrapper {
-    min-height: 100%;
-    margin: 0px;
-    padding: 0px;
+    height: 100%;
+    overflow: hidden;
     background: radial-gradient(${colors.bg}, ${colors.bgPerifery});
   }
   html {

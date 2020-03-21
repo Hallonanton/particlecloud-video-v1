@@ -1,6 +1,23 @@
 import React from 'react'
+import styled from '@emotion/styled'
 import SiteMetadata from './SiteMetadata'
 import Theme from './Theme'
+
+
+/*==============================================================================
+  # Styles
+==============================================================================*/
+
+const Main = styled('main')`
+	position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+`
+
+
 
 /*==============================================================================
   # Component
@@ -9,9 +26,9 @@ import Theme from './Theme'
 const TemplateWrapper = ({children}) => (
   <Theme>
     <SiteMetadata />
-    <main>
+    <Main>
       {children}
-    </main>
+    </Main>
   </Theme>
 )
 

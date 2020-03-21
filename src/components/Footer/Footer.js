@@ -18,8 +18,12 @@ import Github from '../../img/social/github.svg'
 ==============================================================================*/
 
 const FooterWrapper = styled('footer')`
-  margin-top: 35px;
+  margin-top: 25px;
   text-align: center;
+
+  ${theme.above.sm} {
+    margin-top: 35px;
+  }
 
   ${theme.above.md} {
     margin-top: 90px;
