@@ -401,7 +401,12 @@ class MainNavigation extends Component {
               <Link
                 to={item.to}
                 className="mainNavLink"
-                onClick={e => this.setActiveIndex(e)}
+                onClick={e => {
+                  if ( isPortrait && !isActive ) {
+                    e.preventDefault();
+                  }
+                  this.setActiveIndex(e)
+                }}
                 onMouseEnter={e => this.setActiveIndex(e)}
               >
                 {item.topTitle && <h4 className="item--topTitle">{item.topTitle}</h4>}
