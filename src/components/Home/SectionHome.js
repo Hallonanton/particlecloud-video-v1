@@ -139,9 +139,11 @@ const Item = styled('li')`
 class MainNavigation extends Component {
 
   componentDidMount() {
-    window.addEventListener('resize', this.handleResize)
-    window.addEventListener('wheel', this.handleScroll)
-    window.addEventListener('keydown', this.handleKey)
+    window.addEventListener('resize', this.handleResize, false)
+    window.addEventListener('wheel', this.handleScroll, false)
+    window.addEventListener('keydown', this.handleKey, false)
+    window.addEventListener('touchmove', this.handleMove, false);
+    window.addEventListener('touchend', this.handleMoveEnd, false);
 
     this.setState({
       items: this.props.items
@@ -152,13 +154,15 @@ class MainNavigation extends Component {
     clearTimeout(this.resetIndexTimeout);
     clearTimeout(this.scrollTimeout);
     clearTimeout(this.awaitTabTimeout);
-    window.removeEventListener('resize', this.handleResize)
-    window.removeEventListener('wheel', this.handleScroll)
-    window.removeEventListener('keydown', this.handleKey)
+    window.removeEventListener('resize', this.handleResize, false)
+    window.removeEventListener('wheel', this.handleScroll, false)
+    window.removeEventListener('keydown', this.handleKey, false)
+    window.removeEventListener('touchmove', this.handleMove, false)
+    window.removeEventListener('touchend', this.handleMoveEnd, false)
   }
 
   state = {
-    prevScroll: null,
+    prevTouch: null,
     activeIndex: null,
     items: null, 
     orientation: 'portrait',
@@ -247,6 +251,30 @@ class MainNavigation extends Component {
   handleScroll = e => {
     const scrollDirection = e.deltaY
     this.indexStep( scrollDirection )
+  }
+
+  handleMove = e => {
+    const { prevTouch } = this.state
+    const { clientY } = e.touches[0]
+    let scrollDirection = null
+
+    if ( prevTouch ) {
+      scrollDirection = clientY > prevTouch ? 1 : -1
+    }
+
+    this.setState({
+      prevTouch: clientY
+    }, () => {
+      if ( scrollDirection ) {
+        this.indexStep( scrollDirection )
+      }
+    })
+  }
+
+  handleMoveEnd = () => {
+    this.setState({
+      prevTouch: null
+    })
   }
 
   setActiveIndex = e => {
