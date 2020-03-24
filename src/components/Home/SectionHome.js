@@ -17,7 +17,7 @@ const HomeWrapper = styled('div')`
   justify-content: center;
   align-items: center;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   padding: 15px 20px 5px;
 
   ${theme.above.md} {
@@ -56,7 +56,7 @@ const Description = styled('div')`
     line-height: 1.3;
     letter-spacing: 1.5px;
     opacity: 0;
-    transition: ${theme.easings.reveal};
+    transition: all 1000ms ${theme.easings.easeInOutSine};
   }
 
   &.reveal {
@@ -137,7 +137,6 @@ const Item = styled('li')`
     flex-direction: column;
     width: 100%;
     height: 100%;
-    padding: 20px 10px 0px;
     color: transparent;
     text-decoration: none;
     white-space: nowrap;
@@ -145,6 +144,14 @@ const Item = styled('li')`
     transform-style : preserve-3d;
     z-index: 3;
     outline: none;
+  }
+
+  .text-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+    transform: translate(-50%, -50%);
   }
 
   .item--topTitle,
@@ -164,7 +171,6 @@ const Item = styled('li')`
     }
 
     a {
-      padding: 10px;
       color: ${theme.colors.white};
     }
   }
@@ -439,8 +445,10 @@ class MainNavigation extends Component {
                   }
                 }}
               >
-                {item.topTitle && <h4 className="item--topTitle">{item.topTitle}</h4>}
-                {item.title && <h3 className="item--title">{item.title}</h3>}
+                <div class="text-container">
+                  {item.topTitle && <h4 className="item--topTitle">{item.topTitle}</h4>}
+                  {item.title && <h3 className="item--title">{item.title}</h3>}
+                </div>
               </Link>
             </Item>
           )
@@ -455,7 +463,8 @@ class SectionHome extends Component {
   componentDidMount() {
 
     const mainRevealDelay = 1000
-    const secondaryRevealDelay = 1000
+    const titleRevealDelay = 1500
+    const socialRevealDelay = 500
 
     //Trigger main reveal
     this.revealTimeOut = setTimeout(() => {
@@ -466,16 +475,22 @@ class SectionHome extends Component {
         //Trigger secondary reveal
         this.revealTimeOut = setTimeout(() => {
           this.setState({
-            descriptionReveal: true,
-            footerReveal: true
+            descriptionReveal: true
+          }, () => {
+
+            //Trigger secondary reveal
+            this.revealTimeOut = setTimeout(() => {
+              this.setState({
+                footerReveal: true
+              })
+            }, socialRevealDelay)
           })
-        }, secondaryRevealDelay)
+        }, titleRevealDelay)
       })
     }, mainRevealDelay)
   }
 
   componentWillUnmount() {
-    clearTimeout(this.revealTimeOut)
     clearTimeout(this.revealTimeOut)
   }
 

@@ -90,8 +90,8 @@ let easings = {
 easings.primary = `all 450ms ${easings.easeInOutQuint} 0ms`
 easings.secondary = `all 250ms ${easings.easeInOutSine} 0ms`
 
-easings.reveal = `1000ms ${easings.easeInOutSine}`
-easings.revealDelay = `100ms`
+easings.reveal = `1200ms ${easings.easeOutCubic}`
+easings.revealDelay = `120ms`
 
 
 /*==============================================================================
