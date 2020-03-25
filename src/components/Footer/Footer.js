@@ -37,11 +37,11 @@ const FooterWrapper = styled('footer')`
       transform: translateY(15px);
       transition: all ${theme.easings.reveal};
 
-      &:nth-child(2) {
+      &:nth-of-type(2) {
         transition-delay: ${theme.easings.revealDelay};
       }
 
-      &:nth-child(3) {
+      &:nth-of-type(3) {
         transition-delay: calc( 2 * ${theme.easings.revealDelay});
       }
     }

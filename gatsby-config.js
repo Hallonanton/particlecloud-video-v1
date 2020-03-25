@@ -107,6 +107,7 @@ module.exports = {
         display: 'swap'
       }
     },
+    'gatsby-plugin-transition-link',
     'gatsby-plugin-netlify', // make sure to keep it last in the array
   ],
 }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Link as GatsbyLink } from 'gatsby'
+import { Link as GatsbyLink } from 'gatsby-plugin-transition-link'
 
 class Link extends Component {
 

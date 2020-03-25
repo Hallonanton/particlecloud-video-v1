@@ -4,7 +4,7 @@ import 'reset-css'
 import PropTypes from 'prop-types'
 import ReactBreakpoints from 'react-breakpoints'
 import { ThemeProvider } from 'emotion-theming'
-import { Global, css, keyframes } from '@emotion/core'
+import { Global, css } from '@emotion/core'
 import { createBreakpointHelpers } from '../../utility/breakpoints'
 
 
@@ -257,15 +257,6 @@ const fontSizes = {
   # Global styles
 ==============================================================================*/
 
-const pageReveal = keyframes`
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-`
-
 const globalStyles = css`
   ::-moz-selection {
     background: ${colors.text}; 
@@ -281,13 +272,13 @@ const globalStyles = css`
   #gatsby-focus-wrapper {
     height: 100%;
     overflow: hidden;
-    background: radial-gradient(${colors.bg}, ${colors.bgPerifery});
   }
   html {
     box-sizing: border-box;
     //This reset makes it easier to use rem
     // With this reset 1rem ~ 10px, 1.2rem ~12px and so on
     font-size: 62.5%;
+    background: radial-gradient(${colors.bg}, ${colors.bgPerifery});
   }
   body {
     color: ${colors.text};
@@ -296,7 +287,6 @@ const globalStyles = css`
     overflow-x: hidden;
     box-sizing: border-box;
     visibility: visible;
-    animation: ${pageReveal} 500ms ${easings.easeInOutSine};
   }
   *, *:before, *:after {
     box-sizing: inherit;

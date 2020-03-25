@@ -1,13 +1,13 @@
 import React from 'react'
 //import { graphql } from 'gatsby'
 import Layout from '../components/Layout/Layout'
+import SectionAbout from '../components/About/SectionAbout'
 import PageMetadata from '../components/Layout/PageMetadata'
 
 
-const AboutPage = ({ data }) => {
+const AboutPage = ({ data, transitionStatus, entry, exit }) => {
 
   const title = "Anton Pedersen"
-  const subTitle = "Webbutvecklare"
 
   const metaData = {
     title: title
@@ -16,7 +16,13 @@ const AboutPage = ({ data }) => {
   return (
     <Layout>
       <PageMetadata {...metaData} />
-      About
+      <SectionAbout 
+        transitionLink={{
+          transitionStatus: transitionStatus,
+          entry: entry,
+          exit: exit
+        }}
+      />
     </Layout>
   )
 }
