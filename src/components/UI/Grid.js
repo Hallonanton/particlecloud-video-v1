@@ -21,7 +21,6 @@ const BaseContainer = styled('div')`
   
   /* props.fullWidth can be used to remove max-width */
   max-width: ${({ fullWidth }) => fullWidth ? 'none' : '1200px' };
-
   /* props.marginTop can be used to set predefined margins from Theme.js */
   margin-top: ${({ theme, marginTop }) =>
     typeof theme.margin[marginTop] !== 'undefined'
@@ -47,18 +46,15 @@ const BaseCol = styled('div')`
   min-height: 1px;
   padding-left: 15px;
   padding-right: 15px;
-
   /* Base column width */
   ${({ col }) => col ? css`
     flex: 0 0 ${100/(12/col)}%;
     max-width: ${100/(12/col)}%;
   `: null};
-
   /* Responsive column width */
   /* Ex: md="6" for half width above.md */
   ${({ theme, ...props }) => theme.breakpointMap ? 
     theme.breakpointMap.map(breakpoint => {
-
       let { label } = breakpoint
       return props[label] ? css`
         ${theme.above[label]} {
@@ -66,7 +62,6 @@ const BaseCol = styled('div')`
           max-width: ${100/(12/props[label])}%;
         }
       ` : null
-
     }) : null
   }}
 `

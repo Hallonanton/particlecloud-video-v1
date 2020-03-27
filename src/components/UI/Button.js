@@ -1,8 +1,8 @@
 import React from 'react'
+import { Link } from 'gatsby'
 import styled from '@emotion/styled'
 import { css } from '@emotion/core'
 import { darken } from 'polished'
-import Link from '../Link'
 
 /*==============================================================================
   # Styles

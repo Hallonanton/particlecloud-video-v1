@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from '@emotion/styled'
-import Link from '../Link'
 import { theme } from '../Layout/Theme'
 
 /*==============================================================================
@@ -16,7 +15,7 @@ const NavigationList = styled('ul')`
   align-items: center;
 `
 
-const NavigationItem = styled(Link)`
+const NavigationItem = styled('a')`
   position: relative;
   display: flex;
   align-items: center;
@@ -60,8 +59,8 @@ const IconNav = ({ links, ...rest }) => {
       {links.map((link, i) => (
         <li key={i}>
           <NavigationItem 
-            to={link.to}
-            target={link.target}
+            href={link.to}
+            target={link.target ? '_blank' : ''}
             title={link.title}
           >
             <Icon>{link.icon}</Icon>

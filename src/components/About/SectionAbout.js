@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import styled from '@emotion/styled'
-import Footer from '../Footer/Footer'
 import { theme } from '../Layout/Theme'
 
 

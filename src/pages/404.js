@@ -1,12 +1,12 @@
 import React from 'react'
 import styled from '@emotion/styled'
+import { Link } from 'gatsby'
 import Layout from '../components/Layout/Layout'
 import PageMetadata from '../components/Layout/PageMetadata'
 import Container from '../components/UI/Grid'
 import { Hero } from '../components/UI/Headings'
 import Text from '../components/UI/Text'
 import Button from '../components/UI/Button'
-import Link from '../components/Link'
 import VideoSrc from "../img/404.mp4"
 
 /*==============================================================================

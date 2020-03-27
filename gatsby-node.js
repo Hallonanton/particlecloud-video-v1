@@ -1,111 +1,6 @@
-const _ = require('lodash')
-const path = require('path')
 const { createFilePath } = require('gatsby-source-filesystem')
 const { fmImagesToRelative } = require('gatsby-remark-relative-images')
 
-/*==============================================================================
-  # Create pages
-==============================================================================*/
-
-exports.createPages = ({ actions, graphql }) => {
-  const { createPage } = actions
-
-  return graphql(`
-    {
-      allMarkdownRemark(limit: 1000) {
-        edges {
-          node {
-            id
-            fields {
-              slug
-            }
-            frontmatter {
-              templateKey
-              categories
-            }
-          }
-        }
-      }
-    }
-  `).then(result => {
-    if (result.errors) {
-      result.errors.forEach(e => console.error(e.toString()))
-      return Promise.reject(result.errors)
-    }
-
-    /*
-     * Variables
-     */
-
-    const { allDataJson, allMarkdownRemark } = result.data
-    const posts = allMarkdownRemark.edges
-    let homepage = _.get(allDataJson, 'edges[0].node.homepage')
-    let allCategories = []
-
-    /*
-     * Create pages for Sidor, Artiklar
-     */
-
-    posts.forEach(edge => {
-
-      const { id } = edge.node
-      let { slug } = edge.node.fields
-      let categories = _.get(edge, 'node.frontmatter.categories')
-
-      // Save categories for later use
-      if ( categories ) {
-        allCategories = allCategories.concat(categories)
-      }
-
-      // Exclude settings pages from page creation
-      if ( !slug.includes('settings') ) {    
-
-        let { templateKey } = edge.node.frontmatter
-
-        // If template is page, remove "sidor" directory from path
-        if ( templateKey === 'SinglePage' ) {
-          slug = slug.replace("/sidor", "")
-        }
-
-        createPage({
-          path: slug,
-          categories: categories,
-          component: path.resolve(`src/templates/${String(templateKey)}.js`),
-          // Additional data can be passed via context to be used in graphql queries
-          context: {
-            id,
-          },
-        })
-
-      }
-    })
-
-
-    /*
-     * Create category pages
-     */
-
-     if ( allCategories.length > 0 ) {
-
-      // Eliminate duplicate categories
-      allCategories = _.uniq(allCategories)
-
-      // Make category pages
-      allCategories.forEach(category => {
-        const categoryPath = `/artiklar/${_.kebabCase(category)}/`
-
-        createPage({
-          path: categoryPath,
-          component: path.resolve(`src/templates/ArchiveArticle.js`),
-          // Additional data can be passed via context to be used in graphql queries
-          context: {
-            category,
-          },
-        })
-      })
-     }
-  })
-}
 
 /*==============================================================================
   # Customize GraphQL schema
@@ -135,19 +30,10 @@ exports.createSchemaCustomization = ({ actions }) => {
       Github: String
       Codepen: String
     }
-    type MarkdownRemark implements Node {
-      frontmatter: Frontmatter
-    }
-    type Frontmatter {
-      meta: Meta
-    }
-    type Meta {
-      metaDescription: String
-      metaTitle: String
-    }
   `
   createTypes(typeDefs)
 }
+
 
 /*==============================================================================
   # Create image nodes
