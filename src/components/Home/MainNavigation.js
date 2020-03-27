@@ -66,10 +66,6 @@ const Item = styled('li')`
     background-repeat: no-repeat;
     background-size: cover;
     z-index: 2;
-
-    ${theme.above.md} {
-      background-image: url('${({backgroundImageDesktop}) => backgroundImageDesktop}');
-    }
   }
 
   a {
@@ -336,7 +332,6 @@ class MainNavigation extends Component {
               }}
               backgroundColor={backgroundColor}
               backgroundImage={item.backgroundImage}
-              backgroundImageDesktop={item.backgroundImageDesktop}
             >
               <TransitionLink
                 to={item.to}

@@ -134,46 +134,40 @@ class SectionHome extends Component {
         title: "Mer om",
         to: "/about",
         color: "#99e9f2",
-        backgroundImage: "https://placekitten.com/660/270",
-        backgroundImageDesktop: "https://placekitten.com/800/800",
+        backgroundImage: "https://placekitten.com/660/270"
       },
       {
         title: "Kunskap",
         to: "/knowledge",
         color: "#8ce99a",
-        backgroundImage: "https://placekitten.com/660/270",
-        backgroundImageDesktop: "https://placekitten.com/800/800",
+        backgroundImage: "https://placekitten.com/660/270"
       },
       {
         title: "Erfarenhet",
         to: "/experience",
         color: "#ffd43b",
-        backgroundImage: "https://placekitten.com/660/270",
-        backgroundImageDesktop: "https://placekitten.com/800/800",
+        backgroundImage: "https://placekitten.com/660/270"
       },
       {
         title: "Nybergs Bil",
         topTitle: "Case",
         to: "/nybergs-bil",
         color: "#9e7b56",
-        backgroundImage: "https://placekitten.com/660/270",
-        backgroundImageDesktop: "https://placekitten.com/800/800",
+        backgroundImage: "https://placekitten.com/660/270"
       },
       {
         title: "Svenska Hem",
         topTitle: "Case",
         to: "/svenska-hem",
         color: "#e03131",
-        backgroundImage: "https://placekitten.com/660/270",
-        backgroundImageDesktop: "https://placekitten.com/800/800",
+        backgroundImage: "https://placekitten.com/660/270"
       },
       {
         title: "OAS",
         topTitle: "Case",
         to: "/oas",
         color: "#5b2160",
-        backgroundImage: "https://placekitten.com/660/270",
-        backgroundImageDesktop: "https://placekitten.com/800/800",
+        backgroundImage: "https://placekitten.com/660/270"
       }
     ]
 
