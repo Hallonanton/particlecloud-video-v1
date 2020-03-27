@@ -25,6 +25,7 @@ const Item = styled('li')`
   transform-origin: 50% 50%;
   transform-style: preserve-3d;
   transition: ${theme.easings.primary};
+  overflow: hidden;
   z-index: 1;
 
   ${[...Array(6)].map((item, i) => css`
@@ -128,9 +129,6 @@ class MainNavigation extends Component {
   componentDidMount() {
     window.addEventListener('resize', this.handleResize, false)
     window.addEventListener('keydown', this.handleKey, false)
-    //window.addEventListener('wheel', this.handleScroll, false)
-    //window.addEventListener('touchmove', this.handleMove, false);
-    //window.addEventListener('touchend', this.handleMoveEnd, false);
 
     this.setState({
       items: this.props.items
@@ -143,9 +141,6 @@ class MainNavigation extends Component {
     clearTimeout(this.awaitTabTimeout);
     window.removeEventListener('resize', this.handleResize, false)
     window.removeEventListener('keydown', this.handleKey, false)
-    //window.removeEventListener('wheel', this.handleScroll, false)
-    //window.removeEventListener('touchmove', this.handleMove, false)
-    //window.removeEventListener('touchend', this.handleMoveEnd, false)
   }
 
   state = {
@@ -231,35 +226,6 @@ class MainNavigation extends Component {
       }, 10)
     }
   }
-
-  /*handleScroll = e => {
-    const scrollDirection = e.deltaY
-    this.indexStep( scrollDirection )
-  }*/
-
-  /*handleMove = e => {
-    const { prevTouch } = this.state
-    const { clientY } = e.touches[0]
-    let scrollDirection = null
-
-    if ( prevTouch ) {
-      scrollDirection = clientY > prevTouch ? 1 : -1
-    }
-
-    this.setState({
-      prevTouch: clientY
-    }, () => {
-      if ( scrollDirection ) {
-        this.indexStep( scrollDirection )
-      }
-    })
-  }
-
-  handleMoveEnd = () => {
-    this.setState({
-      prevTouch: null
-    })
-  }*/
 
   setActiveIndex = e => {
     clearTimeout(this.scrollTimeout);
