@@ -21,46 +21,50 @@ const Navigation = styled('ul')`
 
 const Item = styled('li')`
   position: absolute;
-  overflow: hidden;
-  transform-origin: 50% 50%;
-  transform-style: preserve-3d;
-  transition: ${theme.easings.primary};
-  overflow: hidden;
+  width: 100%;
+  max-width: 0;
   z-index: 1;
 
+  //Loop out delay for reveal animation
   ${[...Array(6)].map((item, i) => css`
-    &:nth-of-type(${i+1})::before {
+    &:nth-of-type(${i+1}){
       transition: ${theme.easings.primary},
                   max-width ${theme.easings.reveal} ${i * parseInt(theme.easings.revealDelay)}ms;
     }
   `)}
 
+  // Animate width on load
+  &.reveal {
+    //Used for reveal animation
+    max-width: 100%;
+  }
+
+
+  a,
   &::before,
   &::after {
     display: block;
     position: absolute;
+    left: 50%;
     content: "";
-    bottom: 0px;
-    width: 100%;
-    height: 100%;
+    top: 50%;
+    width: 110%;
+    max-width: 100%;
+    height: 200%;
+    max-height: 102%; //102% to prevent divide between items
+    transition: ${theme.easings.primary};
+    //Scale down the item if the item isn't active
+    transform: translateX(-50%) translateY(-50%) scale(${({scale}) => scale});
   }
 
   &::before {
-    left: 50%;
-    max-width: 0%;
+    //Change background color depending on active item
     background-color: ${({backgroundColor}) => backgroundColor};
-    transform: translateX(-50%);
     z-index: 1;
   }
 
-  &.reveal::before {
-    max-width: 100%;
-  }
-
   &::after {
-    transition: ${theme.easings.primary};
     opacity: 0;
-    transform-style : preserve-3d;
     background-image: url('${({backgroundImage}) => backgroundImage}');
     background-position: center center;
     background-repeat: no-repeat;
@@ -69,32 +73,34 @@ const Item = styled('li')`
   }
 
   a {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-    color: transparent;
-    text-decoration: none;
-    white-space: nowrap;
-    transition: ${theme.easings.primary};
-    transform-style : preserve-3d;
-    z-index: 3;
-    outline: none;
+    z-index: 4;
   }
 
-  .text-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    text-align: center;
-    transform: translate(-50%, -50%);
+  // Active(Hovered) element
+  &.active {
+    a,
+    &::before,
+    &::after {
+      max-width: 110% !important;
+      max-height: 200% !important;
+      //Scale up the item if its active
+      transform: translateX(-50%) translateY(-50%) scale(1, 1);
+    }
   }
+`
+
+const TextContainer = styled('div')`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  text-align: center;
+  color: ${theme.colors.white};
+  z-index: 3;
+  transform: translate(-50%, -50%);
 
   .item--topTitle,
   .item--title {
+    white-space: nowrap;
     backface-visibility: hidden;
     transform: translateZ(0);
   }
@@ -102,16 +108,6 @@ const Item = styled('li')`
   .item--topTitle {
     ${theme.fontSizes.description}
     font-weight: 400;
-  }
-
-  &.active {
-    &::after {
-      opacity: 0.3;
-    }
-
-    a {
-      color: ${theme.colors.white};
-    }
   }
 `
 
@@ -289,13 +285,7 @@ class MainNavigation extends Component {
           let width = navWidth
           let height = (navHeight/items.length)
           let top = (i * height)
-          let left = 0
-
-          //Sizes for portrait (mobile)
-          let portraitWidthActive = 1.08
-          let portraitheightActive = 1.4
-          width = isActive ? (width*portraitWidthActive) : width
-          height = isActive ? (height*portraitheightActive) : height
+          let left = '50%'
 
           //Transform
           let difference = i - activeIndex
@@ -303,19 +293,12 @@ class MainNavigation extends Component {
           let fromEnd = i < (items.length - (i+1)) ? i : (items.length - (i+1))
           let position = i < activeIndex ? -1 : 1
 
-          let scale = notActive ? 1 - (difference/75) : 1
-          let translateX = 0
+          let scale = notActive ? 1 - (difference/65) : 1
+          scale = isActive ? 1.1 : scale
           let translateY = 0
 
-          if ( isActive ) {
-
-            translateX = `${(width - (width/portraitWidthActive))/-2}px`
-            translateY = `${(height - (height/portraitheightActive))/-2}px`
-
-          } else if ( notActive ) {
-
-            translateY = fromEnd === 0 ? 0 : `${position * (10/difference)}%`
-
+          if ( notActive ) {
+            translateY = fromEnd === 0 ? 0 : `${position * (30/difference)}%`
           }
 
           return (
@@ -328,8 +311,9 @@ class MainNavigation extends Component {
                 height: height,
                 width: width,
                 zIndex: 10 - difference,
-                transform: `scaleX(${scale}) translate3d(${translateX}, ${translateY}, 0)`
+                transform: `translate3d(-50%, ${translateY}, 0)`
               }}
+              scale={scale}
               backgroundColor={backgroundColor}
               backgroundImage={item.backgroundImage}
             >
@@ -354,12 +338,11 @@ class MainNavigation extends Component {
                 entry={{
                   delay: 1
                 }}
-              >
-                <div className="text-container">
-                  {item.topTitle && <h4 className="item--topTitle">{item.topTitle}</h4>}
-                  {item.title && <h3 className="item--title">{item.title}</h3>}
-                </div>
-              </TransitionLink>
+              />
+              <TextContainer>
+                {item.topTitle && <h4 className="item--topTitle">{item.topTitle}</h4>}
+                {item.title && <h3 className="item--title">{item.title}</h3>}
+              </TextContainer>
             </Item>
           )
         })}
