@@ -20,6 +20,7 @@
     "gatsby-plugin-sharp": "^2.2.9",
     "gatsby-plugin-sitemap": "^2.2.19",
     "gatsby-plugin-transition-link": "^1.18.0",
+    "gatsby-remark-audio": "^1.0.2",
     "gatsby-remark-copy-linked-files": "^2.0.7",
     "gatsby-remark-images": "^3.1.6",
     "gatsby-remark-relative-images": "^0.2.1",
@@ -27,6 +28,7 @@
     "gatsby-transformer-json": "^2.2.12",
     "gatsby-transformer-remark": "^2.6.9",
     "gatsby-transformer-sharp": "^2.1.9",
+    "glslify": "^7.0.0",
     "lodash": "^4.17.15",
     "lodash-webpack-plugin": "^0.11.4",
     "parcel-bundler": "^1.9.4",
@@ -38,6 +40,7 @@
     "react-helmet": "^5.2.0",
     "react-media-universal": "^2.0.2",
     "reset-css": "^4.0.1",
+    "three": "^0.115.0",
     "uuid": "^3.2.1"
   },
   "keywords": [

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import styled from '@emotion/styled'
 import { theme } from '../Layout/Theme'
+import ThreeAbout from './ThreeAbout'
 
 
 /*==============================================================================
@@ -8,15 +9,14 @@ import { theme } from '../Layout/Theme'
 ==============================================================================*/
 
 const AboutWrapper = styled('div')`
+  position: relative;
   display: flex;
-  justify-cotent: center;
-  align-items: center;
-  color: ${theme.colors.white};
-  background: ${theme.colors.black};
   height: 100%;
   width: 100%;
   max-width: 0%;
   margin-left: 50%;
+  overflow: hidden;
+  background-color: ${theme.colors.black};
   transition: all ${theme.easings.reveal};
 
   &.reveal {
@@ -64,7 +64,7 @@ class SectionAbout extends Component {
 
     return (
       <AboutWrapper className={reveal ? 'reveal' : ''}>
-        About
+        <ThreeAbout />
       </AboutWrapper>
     )
   }  

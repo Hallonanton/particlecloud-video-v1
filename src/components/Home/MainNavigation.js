@@ -92,7 +92,7 @@ const Item = styled('li')`
 
   // Active(Hovered) element
   &.active {
-    a{
+    a {
       opacity: 1;
       transition: all 250ms ${theme.easings.easeInOutSine} 350ms;
     }
