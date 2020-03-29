@@ -11,6 +11,10 @@ import { lightenDarkenColor, isTouchDevice } from '../../utility/functions'
 
 const Navigation = styled('ul')`
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   flex-grow: 1;
   flex-shrink: 1;
   width: 100%;
@@ -20,7 +24,7 @@ const Navigation = styled('ul')`
 `
 
 const Item = styled('li')`
-  position: absolute;
+  position: relative;
   width: 100%;
   max-width: 0;
   z-index: 1;
@@ -36,78 +40,66 @@ const Item = styled('li')`
   // Animate width on load
   &.reveal {
     //Used for reveal animation
-    max-width: 100%;
+    max-width: 110%;
   }
 
-
   a,
-  &::before,
-  &::after {
+  &::before {
     display: block;
     position: absolute;
-    left: 50%;
-    content: "";
     top: 50%;
-    width: 110%;
-    max-width: 100%;
-    height: 200%;
-    max-height: 102%; //102% to prevent divide between items
+    left: 50%;
+    width: 100%;
+    height: 100%;
     transition: ${theme.easings.primary};
-    //Scale down the item if the item isn't active
-    transform: translateX(-50%) translateY(-50%) scale(${({scale}) => scale});
+    transform: translate3d(-50%, -50%, 0);
   }
 
   &::before {
-    //Change background color depending on active item
-    background-color: ${({backgroundColor}) => backgroundColor};
-    z-index: 1;
-  }
-
-  &::after {
+    content: "";
     opacity: 0;
     background-image: url('${({backgroundImage}) => backgroundImage}');
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
-    z-index: 2;
+    z-index: 1;
   }
 
   a {
-    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    text-decoration: none;
+    color: ${theme.colors.white};
+    opacity: 0;
+    overflow: hidden;
+    z-index: 2;
+
+    .item--topTitle,
+    .item--title {
+      white-space: nowrap;
+      backface-visibility: hidden;
+      transform: translateZ(0);
+    }
+
+    .item--topTitle {
+      ${theme.fontSizes.description}
+      font-weight: 400;
+    }
   }
 
   // Active(Hovered) element
   &.active {
-    a,
-    &::before,
-    &::after {
-      max-width: 110% !important;
-      max-height: 200% !important;
-      //Scale up the item if its active
-      transform: translateX(-50%) translateY(-50%) scale(1, 1);
+    a{
+      opacity: 1;
+      transition: all 250ms ${theme.easings.easeInOutSine} 350ms;
     }
-  }
-`
-
-const TextContainer = styled('div')`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  text-align: center;
-  color: ${theme.colors.white};
-  z-index: 3;
-  transform: translate(-50%, -50%);
-
-  .item--topTitle,
-  .item--title {
-    white-space: nowrap;
-    backface-visibility: hidden;
-    transform: translateZ(0);
-  }
-
-  .item--topTitle {
-    ${theme.fontSizes.description}
-    font-weight: 400;
+    &::before {
+      opacity: 0.2;
+      transition: all 250ms ${theme.easings.easeInOutSine} 250ms;
+    }
   }
 `
 
@@ -281,40 +273,35 @@ class MainNavigation extends Component {
           const activeColor = activeIndex !== null && baseColor ? lightenDarkenColor(baseColor, (step * (activeIndex - i))) : undefined
           const backgroundColor = activeColor ? activeColor : defaultColor
 
-          //Default sizes
-          let width = navWidth
-          let height = (navHeight/items.length)
-          let top = (i * height)
-          let left = '50%'
-
           //Transform
           let difference = i - activeIndex
           difference = difference < 0 ? -difference : difference
           let fromEnd = i < (items.length - (i+1)) ? i : (items.length - (i+1))
           let position = i < activeIndex ? -1 : 1
 
-          let scale = notActive ? 1 - (difference/65) : 1
-          scale = isActive ? 1.1 : scale
+          let scale = notActive ? 1 - (difference/40) : 1
           let translateY = 0
 
           if ( notActive ) {
             translateY = fromEnd === 0 ? 0 : `${position * (30/difference)}%`
           }
 
+          //Default sizes
+          let width = isActive ? navWidth*1.1 : navWidth*scale
+          let height = isActive ? width*0.75 : (navHeight/items.length)
+
+
           return (
             <Item 
               key={i}
               className={itemClasses}
               style={{
-                top: top,
-                left: left,
                 height: height,
                 width: width,
-                zIndex: 10 - difference,
-                transform: `translate3d(-50%, ${translateY}, 0)`
+                backgroundColor: backgroundColor,
+                zIndex: 10 - difference
               }}
-              scale={scale}
-              backgroundColor={backgroundColor}
+              scale={1}
               backgroundImage={item.backgroundImage}
             >
               <TransitionLink
@@ -338,11 +325,10 @@ class MainNavigation extends Component {
                 entry={{
                   delay: 1
                 }}
-              />
-              <TextContainer>
+              >
                 {item.topTitle && <h4 className="item--topTitle">{item.topTitle}</h4>}
                 {item.title && <h3 className="item--title">{item.title}</h3>}
-              </TextContainer>
+              </TransitionLink>
             </Item>
           )
         })}
