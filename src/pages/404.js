@@ -7,7 +7,7 @@ import Container from '../components/UI/Grid'
 import { Hero } from '../components/UI/Headings'
 import Text from '../components/UI/Text'
 import Button from '../components/UI/Button'
-import VideoSrc from "../img/404.mp4"
+import VideoSrc from '../img/404.mp4'
 
 /*==============================================================================
   # Styles
