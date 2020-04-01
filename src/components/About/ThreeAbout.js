@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
 import * as THREE from 'three'
+import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls'
+import Stats from 'three/examples/jsm/libs/stats.module.js'
 import VideoSrc from '../../img/test-face.mp4'
 
 
@@ -30,6 +32,7 @@ class Animation extends Component {
     this.renderer.setSize(this.mountWidth, this.mountHeight)
 
     //Interactive variables
+    this.raycaster = new THREE.Raycaster()
     this.mouse = {
       x: 999999,
       y: 999999,
@@ -42,7 +45,8 @@ class Animation extends Component {
 
     //Start scene
     this.mount.appendChild(this.renderer.domElement)
-    this.prepareScene()
+    this.stats = new Stats();
+    this.mount.appendChild( this.stats.dom );
     this.startScene()
   }
 
@@ -78,8 +82,13 @@ class Animation extends Component {
    */
   onMousemove = e => {
     e.preventDefault()
-    this.mouse.x = ( e.clientX / this.mountWidth ) * 2 - 1
-    this.mouse.y = - ( e.clientY / this.mountHeight ) * 2 + 1
+    //this.mouse.x = ( e.clientX / this.mountWidth ) * 2 - 1
+    //this.mouse.y = - ( e.clientY / this.mountHeight ) * 2 + 1
+
+    this.mouse.x = e.clientX - this.mountWidth / 2
+    this.mouse.y = -e.clientY + this.mountHeight / 2
+
+    console.log('mouse', this.mouse )
   }
 
 
@@ -88,6 +97,8 @@ class Animation extends Component {
    */
   runScene = () => {
     this.renderScene()
+    this.controls.update()
+    this.stats.update()
     this.animationFrame = window.requestAnimationFrame(this.runScene)
   }
 
@@ -96,9 +107,8 @@ class Animation extends Component {
    * Thiss will trigger the animation to start
    */
   startScene = () => {
-   if (!this.animationFrame) {
-      this.animationFrame = window.requestAnimationFrame(this.runScene)
-    }
+    this.initSceneCamera()
+    this.initVideo()
   }
 
 
@@ -110,15 +120,6 @@ class Animation extends Component {
     if ( this.video ) {
       this.video.pause()
     }
-  }
-
-
-  /*
-   * This setups variables and functions before the scene starts
-   */
-  prepareScene = () => {
-    this.initSceneCamera()
-    this.initVideo()
   }
 
 
@@ -154,13 +155,26 @@ class Animation extends Component {
     this.camera.lookAt(0, 0, 0)
 
     this.scene.add(this.camera)
+
+    //Orbitcontrols
+    this.controls = new OrbitControls( this.camera, this.renderer.domElement );
+
+    this.controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
+    this.controls.dampingFactor = 0.05;
+
+    this.controls.screenSpacePanning = false;
+
+    this.controls.minDistance = 1500;
+    this.controls.maxDistance = 2000;
+
+    this.controls.maxPolarAngle = Math.PI / 2;
   }
 
 
   /*
    * initVideo
    */
-  initVideo = () => {
+  initVideo = callback => {
     this.video.autoplay = true
     this.video.loop = true
     this.video.src = VideoSrc
@@ -170,6 +184,11 @@ class Animation extends Component {
       this.videoHeight = this.video.videoHeight
 
       this.createParticles()
+       
+      //requestAnimationFrame must start after the video has loaded
+      if (!this.animationFrame) {
+        this.animationFrame = window.requestAnimationFrame(this.runScene)
+      }
     })
   }
 
@@ -204,6 +223,16 @@ class Animation extends Component {
 
     this.particles = new THREE.Points(geometry, material)
     this.scene.add(this.particles)
+
+
+
+    //Tests
+    var geometry2 = new THREE.CircleGeometry( 5, 32 );
+    var material2 = new THREE.MeshBasicMaterial( { color: 0xf00f00 } );
+    this.circle = new THREE.Mesh( geometry2, material2 );
+    this.circle.position.x = 0
+    this.circle.position.y = 0
+    this.scene.add( this.circle );
   }
 
 
@@ -232,6 +261,17 @@ class Animation extends Component {
 
 
   /*
+   * Get distance between two points
+   */
+  getDistance = (x1, y1, x2, y2) => {
+    const xDistance = x2 - x1;
+    const yDistance = y2 - y1;
+    
+    return Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
+  }
+
+
+  /*
    * Redener the scene
    */
   renderScene = t => {
@@ -241,6 +281,10 @@ class Animation extends Component {
     const threshold = 18.4
 
     if (this.particles) {
+
+      //Look for mouse interactions
+      this.raycaster.setFromCamera(this.mouse, this.camera)
+      this.intersects = this.raycaster.intersectObjects( this.scene.children )
 
       // To reduce CPU usage.
       const useCache = parseInt(t) % 3 === 0
@@ -266,15 +310,24 @@ class Animation extends Component {
         if ( gray > threshold ) {
           particle.z = gray * amplifier * 5;
 
+          //Tests
+          if ( gray > 254 ) {
+            //console.log( 'gray', gray )
+            //console.log( 'particle', particle )
+          }
+
         //Hide darker particles
         } else {
-          particle.z = 0
+          particle.z = 1000000
 
         }
       }
 
       this.particles.geometry.verticesNeedUpdate = true
     }
+
+    this.circle.position.x = this.mouse.x
+    this.circle.position.y = this.mouse.y
 
     this.renderer.render(this.scene, this.camera)
   }
