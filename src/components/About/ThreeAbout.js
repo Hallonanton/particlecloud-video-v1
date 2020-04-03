@@ -36,6 +36,7 @@ class Animation extends Component {
 
     //Interactive variables
     this.raycaster = new THREE.Raycaster()
+    this.raycaster.params.Points.threshold = 10;
     this.mouse = {
       x: 999999,
       y: 999999,
@@ -85,11 +86,11 @@ class Animation extends Component {
    */
   onMousemove = e => {
     e.preventDefault()
-    //this.mouse.x = ( e.clientX / this.mountWidth ) * 2 - 1
-    //this.mouse.y = - ( e.clientY / this.mountHeight ) * 2 + 1
+    this.mouse.x = ( e.clientX / this.mountWidth ) * 2 - 1
+    this.mouse.y = - ( e.clientY / this.mountHeight ) * 2 + 1
 
-    this.mouse.x = e.clientX - this.mountWidth / 2
-    this.mouse.y = -e.clientY + this.mountHeight / 2
+    //this.mouse.x = e.clientX - this.mountWidth / 2
+    //this.mouse.y = -e.clientY + this.mountHeight / 2
 
     //console.log('mouse', this.mouse )
   }
@@ -111,18 +112,7 @@ class Animation extends Component {
    */
   startScene = () => {
     this.initSceneCamera()
-    //this.initVideo()
-
-
-    //TESTS
-    let pcBuffer = this.generatePointcloud();
-    pcBuffer.scale.set( 5, 10, 10 );
-    pcBuffer.position.set( - 5, 0, 0 );
-    this.scene.add( pcBuffer );
-
-    if (!this.animationFrame) {
-      this.animationFrame = window.requestAnimationFrame(this.runScene)
-    }
+    this.initVideo()
   }
 
 
@@ -188,7 +178,7 @@ class Animation extends Component {
   /*
    * initVideo
    */
-  /*initVideo = callback => {
+  initVideo = callback => {
     this.video.autoplay = true
     this.video.loop = true
     this.video.src = VideoSrc
@@ -197,14 +187,15 @@ class Animation extends Component {
       this.videoWidth = this.video.videoWidth
       this.videoHeight = this.video.videoHeight
 
-      this.createParticles()
+      this.pointcloud = this.generatePointcloud()
+      this.scene.add( this.pointcloud )
        
       //requestAnimationFrame must start after the video has loaded
       if (!this.animationFrame) {
         this.animationFrame = window.requestAnimationFrame(this.runScene)
       }
     })
-  }*/
+  }
 
 
   /*
@@ -259,54 +250,31 @@ class Animation extends Component {
     # TESTS
   ==============================================================================*/
 
-  generatePointCloudGeometry() {
+  generatePointcloud() {
 
-    const geometry = new THREE.BufferGeometry();
     const width = this.videoWidth;
     const height = this.videoHeight;
-    const numPoints = width * height;
 
-    let positions = new Float32Array( numPoints * 3 );
-    let colors = new Float32Array( numPoints * 3 );
-
-    let k = 0;
-
-    for ( var i = 0; i < width; i ++ ) {
-
-      for ( var j = 0; j < height; j ++ ) {
-
-        const x = i - width / 2
-        const y = -j + height / 2
-        const z = 0;
- 
-        positions[ 3 * k ] = x;
-        positions[ 3 * k + 1 ] = y;
-        positions[ 3 * k + 2 ] = z;
-
-        colors[ 3 * k ] = this.defaultColor.r;
-        colors[ 3 * k + 1 ] = this.defaultColor.g;
-        colors[ 3 * k + 2 ] = this.defaultColor.b;
-
-        k ++;
-
-      }
-
-    }
-
-    geometry.setAttribute( 'position', new THREE.BufferAttribute( positions, 3 ) );
-    geometry.setAttribute( 'color', new THREE.BufferAttribute( colors, 3 ) );
-    geometry.computeBoundingBox();
+    let geometry = new THREE.Geometry();
     geometry.morphAttributes = {}
 
-    return geometry;
+    //Loop and create a verticy for every pixel of the frame
+    for (let y = 0; y < height; y += 1) {
+      for (let x = 0; x < width; x += 1) {
+        const vertex = new THREE.Vector3(
+          x - width / 2,
+          -y + height / 2,
+          0
+        )
+        geometry.vertices.push(vertex)
+        geometry.colors.push(this.defaultColor)
+      }
+    }
 
-  }
+    geometry.computeBoundingBox();
 
-
-  generatePointcloud() {
-    var geometry = this.generatePointCloudGeometry();
-    var material = new THREE.PointsMaterial( { size: this.pointSize, vertexColors: true } );
-
+    let material = new THREE.PointsMaterial( { size: this.pointSize, vertexColors: true } );
+    
     return new THREE.Points( geometry, material );
   }
 
@@ -360,35 +328,42 @@ class Animation extends Component {
     const amplifier = 0.03
     const threshold = 18.4
 
-    /*if (this.particles) {
+    if (this.pointcloud) {
 
       //Look for mouse interactions
       this.raycaster.setFromCamera(this.mouse, this.camera)
-      this.intersects = this.raycaster.intersectObjects( this.scene.children )
+      let intersects = this.raycaster.intersectObjects( this.scene.children )
+      let intersectedIndexes = []
+
+      if ( intersects ) {
+        for ( let i = 0; i < intersects.length; i++ ) {
+          intersectedIndexes.push( intersects[ i ].index )
+        }
+      }
 
       // To reduce CPU usage.
       const useCache = parseInt(t) % 3 === 0
       const imageData = this.getVideoFrameData(this.video, useCache)
 
       //Loop through all vertices
-      for (let i = 0, length = this.particles.geometry.vertices.length; i < length; i++) {
+      for (let i = 0, length = this.pointcloud.geometry.vertices.length; i < length; i++) {
         
         //Current particle
-        let particle = this.particles.geometry.vertices[i]
+        let particle = this.pointcloud.geometry.vertices[i]
 
         //Get alphaIndex for current particle
         let index = i * 4
         let gray = (imageData.data[index] + imageData.data[index + 1] + imageData.data[index + 2]) / 3
         
+        if ( intersectedIndexes.includes(i) ) {
+          this.pointcloud.geometry.colors[i] = new THREE.Color(0xf00f00)
+        } else {
+          this.pointcloud.geometry.colors[i] = this.defaultColor
+        }
+
         //Animate z-index for particles brighter than threshold
         if ( gray > threshold ) {
           particle.z = gray * amplifier * 5;
-
-          //Tests
-          if ( gray > 254 ) {
-            //console.log( 'gray', gray )
-            //console.log( 'particle', particle )
-          }
 
         //Hide darker particles
         } else {
@@ -397,8 +372,9 @@ class Animation extends Component {
         }
       }
 
-      this.particles.geometry.verticesNeedUpdate = true
-    }*/
+      this.pointcloud.geometry.verticesNeedUpdate = true
+      this.pointcloud.geometry.colorsNeedUpdate = true
+    }
 
 
     this.renderer.render(this.scene, this.camera)
