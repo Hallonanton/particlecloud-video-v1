@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import * as THREE from 'three'
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls'
 import Stats from 'three/examples/jsm/libs/stats.module.js'
-import VideoSrc from '../../img/test-face.mp4'
+import VideoSrc from '../../img/test-face-150.mp4'
 
 
 //Component
@@ -26,8 +26,11 @@ class Animation extends Component {
 
     //Basic variables
     this.defaultColor = new THREE.Color(0x27ae60)
+    this.pointSize = 1
     this.mountWidth = window.innerWidth
     this.mountHeight = window.innerHeight
+    this.videoWidth = 150
+    this.videoHeight = 150
     this.renderer.setPixelRatio(window.devicePixelRatio)
     this.renderer.setSize(this.mountWidth, this.mountHeight)
 
@@ -88,7 +91,7 @@ class Animation extends Component {
     this.mouse.x = e.clientX - this.mountWidth / 2
     this.mouse.y = -e.clientY + this.mountHeight / 2
 
-    console.log('mouse', this.mouse )
+    //console.log('mouse', this.mouse )
   }
 
 
@@ -108,7 +111,18 @@ class Animation extends Component {
    */
   startScene = () => {
     this.initSceneCamera()
-    this.initVideo()
+    //this.initVideo()
+
+
+    //TESTS
+    let pcBuffer = this.generatePointcloud();
+    pcBuffer.scale.set( 5, 10, 10 );
+    pcBuffer.position.set( - 5, 0, 0 );
+    this.scene.add( pcBuffer );
+
+    if (!this.animationFrame) {
+      this.animationFrame = window.requestAnimationFrame(this.runScene)
+    }
   }
 
 
@@ -136,7 +150,7 @@ class Animation extends Component {
       far: 10000,
       x: 0,
       y: 0,
-      z: 1500
+      z: 200
     }
 
     this.camera = new THREE.PerspectiveCamera(
@@ -164,7 +178,7 @@ class Animation extends Component {
 
     this.controls.screenSpacePanning = false;
 
-    this.controls.minDistance = 1500;
+    this.controls.minDistance = 0;
     this.controls.maxDistance = 2000;
 
     this.controls.maxPolarAngle = Math.PI / 2;
@@ -174,7 +188,7 @@ class Animation extends Component {
   /*
    * initVideo
    */
-  initVideo = callback => {
+  /*initVideo = callback => {
     this.video.autoplay = true
     this.video.loop = true
     this.video.src = VideoSrc
@@ -190,17 +204,21 @@ class Animation extends Component {
         this.animationFrame = window.requestAnimationFrame(this.runScene)
       }
     })
-  }
+  }*/
 
 
   /*
    * createParticles
    */
-  createParticles = () => {
+  /*createParticles = () => {
     const frameData = this.getVideoFrameData(this.video)
 
     const geometry = new THREE.Geometry()
     geometry.morphAttributes = {} // This is necessary to avoid error.
+
+    console.log( 'height', frameData.height )
+    console.log( 'width', frameData.width )
+    console.log( 'total', frameData.width * frameData.height )
 
     //Loop and create a verticy for every pixel of the frame
     for (let y = 0, height = frameData.height; y < height; y += 1) {
@@ -216,7 +234,7 @@ class Animation extends Component {
     }
 
     const material = new THREE.PointsMaterial({
-      size: 1,
+      size: 1.5,
       vertexColors: THREE.VertexColors,
       sizeAttenuation: false
     })
@@ -233,7 +251,70 @@ class Animation extends Component {
     this.circle.position.x = 0
     this.circle.position.y = 0
     this.scene.add( this.circle );
+  }*/
+
+
+
+  /*==============================================================================
+    # TESTS
+  ==============================================================================*/
+
+  generatePointCloudGeometry() {
+
+    const geometry = new THREE.BufferGeometry();
+    const width = this.videoWidth;
+    const height = this.videoHeight;
+    const numPoints = width * height;
+
+    let positions = new Float32Array( numPoints * 3 );
+    let colors = new Float32Array( numPoints * 3 );
+
+    let k = 0;
+
+    for ( var i = 0; i < width; i ++ ) {
+
+      for ( var j = 0; j < height; j ++ ) {
+
+        const x = i - width / 2
+        const y = -j + height / 2
+        const z = 0;
+ 
+        positions[ 3 * k ] = x;
+        positions[ 3 * k + 1 ] = y;
+        positions[ 3 * k + 2 ] = z;
+
+        colors[ 3 * k ] = this.defaultColor.r;
+        colors[ 3 * k + 1 ] = this.defaultColor.g;
+        colors[ 3 * k + 2 ] = this.defaultColor.b;
+
+        k ++;
+
+      }
+
+    }
+
+    geometry.setAttribute( 'position', new THREE.BufferAttribute( positions, 3 ) );
+    geometry.setAttribute( 'color', new THREE.BufferAttribute( colors, 3 ) );
+    geometry.computeBoundingBox();
+    geometry.morphAttributes = {}
+
+    return geometry;
+
   }
+
+
+  generatePointcloud() {
+    var geometry = this.generatePointCloudGeometry();
+    var material = new THREE.PointsMaterial( { size: this.pointSize, vertexColors: true } );
+
+    return new THREE.Points( geometry, material );
+  }
+
+
+  /*==============================================================================
+    # END TESTS
+  ==============================================================================*/
+
 
 
   /*
@@ -276,11 +357,10 @@ class Animation extends Component {
    */
   renderScene = t => {
 
-    const density = 20
-    const amplifier = 0.3
+    const amplifier = 0.03
     const threshold = 18.4
 
-    if (this.particles) {
+    /*if (this.particles) {
 
       //Look for mouse interactions
       this.raycaster.setFromCamera(this.mouse, this.camera)
@@ -295,12 +375,6 @@ class Animation extends Component {
         
         //Current particle
         let particle = this.particles.geometry.vertices[i]
-
-        //Set z-index to be very high so that the particle is hidden from view
-        if (i % density !== 0) {
-          particle.z = 1000000
-          continue;
-        }
 
         //Get alphaIndex for current particle
         let index = i * 4
@@ -324,10 +398,8 @@ class Animation extends Component {
       }
 
       this.particles.geometry.verticesNeedUpdate = true
-    }
+    }*/
 
-    this.circle.position.x = this.mouse.x
-    this.circle.position.y = this.mouse.y
 
     this.renderer.render(this.scene, this.camera)
   }
