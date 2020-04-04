@@ -293,6 +293,8 @@ class Animation extends Component {
       return this.frameCache
     }
 
+    console.log('frame', frame)
+
     const w = frame.videoWidth
     const h = frame.videoHeight
 
@@ -305,18 +307,9 @@ class Animation extends Component {
     this.ctx.drawImage(frame, 0, 0)
     this.frameCache = this.ctx.getImageData(0, 0, w, h)
 
+    console.log('frameCache', this.frameCache)
+
     return this.frameCache
-  }
-
-
-  /*
-   * Get distance between two points
-   */
-  getDistance = (x1, y1, x2, y2) => {
-    const xDistance = x2 - x1;
-    const yDistance = y2 - y1;
-    
-    return Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
   }
 
 
