@@ -280,11 +280,6 @@ class MainNavigation extends Component {
           let position = i < activeIndex ? -1 : 1
 
           let scale = notActive ? 1 - (difference/40) : 1
-          let translateY = 0
-
-          if ( notActive ) {
-            translateY = fromEnd === 0 ? 0 : `${position * (30/difference)}%`
-          }
 
           //Default sizes
           let width = isActive ? navWidth*1.1 : navWidth*scale

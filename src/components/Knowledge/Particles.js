@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { TweenLite, Quad } from 'gsap';
+import { TweenLite } from 'gsap';
 import TouchTexture from './Interactive/TouchTexture';
 
 const glslify = require("glslify");
@@ -161,7 +161,7 @@ export default class Particles {
     if (this.touch) this.touch.update();
   }
 
-  show(time = 1.0) {
+  show(time = 2.0) {
     if (!this.object3D) return;
     // reset
     TweenLite.fromTo(this.object3D.material.uniforms.uSize, time, { value: 0 }, { value: 1.0 });

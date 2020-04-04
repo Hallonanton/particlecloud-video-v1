@@ -1,17 +1,14 @@
 import * as THREE from 'three';
 import InteractiveControls from './Interactive/InteractiveControls';
 import Particles from './Particles';
-import VideoSrc from '../../img/test-face-150.mp4'
-
-const glslify = require('glslify');
 
 export default class WebGLView {
 
-	constructor(app) {
+	constructor(app, videoSrc) {
 		this.app = app;
 
 		this.initThree();
-		this.initParticles();
+		this.initParticles(videoSrc);
 		this.initControls();
 	}
 
@@ -36,10 +33,10 @@ export default class WebGLView {
 		this.interactive = new InteractiveControls(this.camera, this.renderer.domElement);
 	}
 
-	initParticles() {
+	initParticles(videoSrc) {
 		this.particles = new Particles(this);
 		this.scene.add(this.particles.container);
-		this.particles.init(VideoSrc);
+		this.particles.init(videoSrc);
 	}
 
 	// ---------------------------------------------------------------------------------------------

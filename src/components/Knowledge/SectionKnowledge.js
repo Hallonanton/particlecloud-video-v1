@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import WebGLHandler from './WebglHandler'
-
+import Stats from 'three/examples/jsm/libs/stats.module.js'
+import VideoSrc from '../../img/test-face-150.mp4'
 
 
 /*==============================================================================
@@ -10,6 +11,7 @@ import WebGLHandler from './WebglHandler'
 class SectionKnowledge extends Component {
 
   componentDidMount() {
+    this.useStats = false;
     this.initWebGL();
     this.addListeners();
     this.animate();
@@ -21,8 +23,12 @@ class SectionKnowledge extends Component {
   }  
 
   initWebGL() {
-    this.webgl = new WebGLHandler(this);
+    this.webgl = new WebGLHandler(this, VideoSrc);
     this.mount.appendChild(this.webgl.renderer.domElement);
+    if ( this.useStats ) {
+      this.stats = new Stats();
+      this.mount.appendChild(this.stats.dom);
+    }
   }
 
   addListeners() {
@@ -41,6 +47,10 @@ class SectionKnowledge extends Component {
   animate() {
     this.update();
     this.draw();
+
+    if ( this.useStats ) {
+      this.stats.update();
+    }
 
     this.animationFrame = requestAnimationFrame(this.handlerAnimate);
   }
@@ -64,9 +74,8 @@ class SectionKnowledge extends Component {
   render () {
 
     const mountStyle = {
-      position: 'absolute',
-      width: '100%',
-      height: '100%',
+      width: '100vw',
+      height: '100vh',
       background: '#000'
     }
 

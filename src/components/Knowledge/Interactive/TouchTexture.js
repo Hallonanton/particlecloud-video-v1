@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { easeOutQuad, easeInOutQuad, easeOutSine, easeInOutSine } from './utils';
+import { easeOutSine } from './utils';
 
 export default class TouchTexture {
 	constructor(parent) {
