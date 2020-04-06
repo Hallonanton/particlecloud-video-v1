@@ -1,13 +1,11 @@
 import React from 'react'
 import styled from '@emotion/styled'
-import { Link } from 'gatsby'
 import Layout from '../components/Layout/Layout'
 import PageMetadata from '../components/Layout/PageMetadata'
 import Container from '../components/UI/Grid'
 import { Hero } from '../components/UI/Headings'
 import Text from '../components/UI/Text'
 import Button from '../components/UI/Button'
-import VideoSrc from '../img/404.mp4'
 
 /*==============================================================================
   # Styles
@@ -29,12 +27,6 @@ const Heading = styled(Hero)`
 	margin-bottom: 5px;
 `
 
-const Video = styled('video')`
-	width: 100%;
-	margin-top: 30px;
-	margin-bottom: 30px;
-`
-
 /*==============================================================================
   # Components
 ==============================================================================*/
@@ -49,15 +41,6 @@ const NotFoundPage = () => (
 	    		small
 	    		content="Den sidan du söker verkar inte finnas." 
 	    	/>
-	    	<Link to="/">
-		    	<Video 
-		    		autoPlay
-		    		loop
-		    		mute
-		    	>
-				    <source src={VideoSrc} type="video/mp4" />
-				  </Video>
-			  </Link>
 			  <Button to="/">Till startsidan</Button>
     	</Content>
     </StyledContainer>

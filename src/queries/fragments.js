@@ -70,23 +70,3 @@ export const SiteMetaQuery = graphql`
     }
   }
 `
-
-export const Footer = graphql`
-  fragment Footer on Query {
-    allDataJson {
-      edges {
-        node {
-          socialmedia {
-            Facebook
-            Instagram
-            Twitter
-            LinkedIn
-            Youtube
-            Codepen
-            Github
-          }
-        }
-      }
-    }
-  }
-`

@@ -1,9 +1,9 @@
 module.exports = {
   siteMetadata: {
-    title: 'Portfolio',
+    title: 'Particle cloud video v1',
     titleSuffix: '|',
     sitename: 'Anton Pedersen',
-    siteUrl: 'https://hallonanton-portfolio.netlify.com/',
+    siteUrl: 'https://particlecloud-video-v1.netlify.app/',
     description: '',
   },
   plugins: [
@@ -30,13 +30,6 @@ module.exports = {
       options: {
         path: `${__dirname}/src/img`,
         name: 'images',
-      },
-    },
-    {
-      resolve: 'gatsby-source-filesystem',
-      options: {
-        path: `${__dirname}/src/data`,
-        name: 'data',
       },
     },
     {
@@ -102,6 +95,5 @@ module.exports = {
       }
     },
     'gatsby-plugin-transition-link',
-    'gatsby-plugin-netlify', // make sure to keep it last in the array
   ],
 }
